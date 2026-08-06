@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../../workspaces/215003575"
+		},
+		{
+			"path": "../../../workspaces/Humanaid"
+		}
+	],
+	"settings": {
+		"gitdoc.enabled": true
+	}
+}

@@ -1,242 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="index_title">Solve World Hunger</title>
+{% extends 'layout.html' %}
 
-    <!-- Modern Font: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+{% block title %}Humanaid | Home{% endblock %}
 
-    <style>
-        /* CSS Reset & Base Styles */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+{% block content %}
+<section id="links">
+    <img class="hero-img" src="{{ url_for('static', filename='image.png') }}" alt="Humanitarian Relief Banner">
 
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: #f8fafc;
-            color: #1e293b;
-            line-height: 1.6;
-            padding: 2rem 1rem;
-        }
+    <h2>DONATION CATEGORIES</h2>
+    <div id="categories">
+        {% for donation in donations %}
+            {% include 'donation_categories.html' %}
+        {% endfor %}
+    </div>
+</section>
 
-        main, header, footer {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+<h2>About Us</h2>
+<section id="about_me">
+    <blockquote>"Love and compassion are necessities, not luxuries. Without them, humanity cannot survive."</blockquote>
+</section>
 
-        /* Typography */
-        h1 {
-            font-size: 2.75rem;
-            font-weight: 800;
-            color: #0f172a;
-            text-align: center;
-            margin-bottom: 2rem;
-            letter-spacing: -0.025em;
-        }
+<h2>Stories of Impact</h2>
+<section id="stories">
+    <blockquote>"Humanity is an ocean; if a few drops of the ocean are dirty, the ocean does not become dirty."</blockquote>
+</section>
 
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #334155;
-            margin: 2.5rem 0 1rem 0;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 0.5rem;
-        }
-
-        /* Hero Image */
-        .hero-img {
-            width: 100%;
-            height: 380px;
-            object-fit: cover;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-        }
-
-        /* Accordion / Collapsible Container */
-        #categories {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            padding: 0;
-        }
-
-        .accordion-item {
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            transition: all 0.2s ease-in-out;
-        }
-
-        .accordion-item:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        /* Main Clickable Title Bar */
-        summary {
-            padding: 1.25rem 1.5rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #0f172a;
-            cursor: pointer;
-            list-style: none;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            user-select: none;
-            transition: background-color 0.2s ease;
-        }
-
-        summary::-webkit-details-marker {
-            display: none;
-        }
-
-        summary:hover {
-            background-color: #f1f5f9;
-        }
-
-        /* Animated Chevron Arrow */
-        summary::after {
-            content: '›';
-            font-size: 1.5rem;
-            line-height: 1;
-            color: #0284c7;
-            transition: transform 0.2s ease;
-            font-weight: 700;
-        }
-
-        details[open] summary::after {
-            transform: rotate(90deg);
-        }
-
-        details[open] summary {
-            border-bottom: 1px solid #e2e8f0;
-            background-color: #f8fafc;
-        }
-
-        /* Expanded Link Container */
-        .links-container {
-            padding: 1.25rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            background-color: #ffffff;
-        }
-
-        .donation-link-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            background-color: #f8fafc;
-            border-radius: 6px;
-            border: 1px solid #f1f5f9;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .link-title {
-            font-weight: 500;
-            color: #334155;
-            font-size: 0.95rem;
-        }
-
-        /* Clickable Donate Button */
-        .donate-btn {
-            display: inline-block;
-            background-color: #0284c7;
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.875rem;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            transition: background-color 0.2s ease-in-out;
-            white-space: nowrap;
-        }
-
-        .donate-btn:hover {
-            background-color: #0369a1;
-        }
-
-        /* Blockquotes */
-        blockquote {
-            background-color: #ffffff;
-            border-left: 4px solid #0284c7;
-            padding: 1.25rem 1.5rem;
-            margin: 1rem 0;
-            border-radius: 0 8px 8px 0;
-            font-style: italic;
-            color: #475569;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Footer & Button */
-        footer {
-            margin-top: 3rem;
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        footer button {
-            background-color: #0f172a;
-            color: #ffffff;
-            font-family: inherit;
-            font-size: 1rem;
-            font-weight: 600;
-            padding: 0.75rem 2rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        footer button:hover {
-            background-color: #334155;
-        }
-    </style>
-</head>
-<body class="home" id="home">
-
-    <header>
-        <h1 id="heading">Create A Difference</h1>
-    </header>
-
-    <main>
-        <section id="links">
-            <img class="hero-img" src="http://127.0.0.1:5000/static/image.png" alt="An image of old era">
-            <h2>DONATION CATEGORIES</h2>
-            <div id="categories">
-                    {% for donation in donations %}
-                        {% include 'donation_categories.html'%}
-                    {% endfor %}
-            </div>
-        </section>
-
-        <h2>About Me</h2>
-        <section id="about_me">
-            <blockquote>"Love and compassion are necessities, not luxuries. Without them, humanity cannot survive."</blockquote>
-        </section>
-
-        <h2>Stories</h2>
-        <section id="stories">
-            <blockquote>"Humanity is an ocean; if a few drops of the ocean are dirty, the ocean does not become dirty."</blockquote>
-        </section>
-    </main>
-
-    <footer>
-        <button>Contact Us</button>
-    </footer>
-</body>
-</html>
+<!-- Contact Us Button exclusively on home.html -->
+<section class="contact-section">
+    <a href="mailto:adityakumarmishra162006@gmail.com?subject=Regarding%20Humanaid&body=Your%20Name%3A%20%3CINPUT%20YOUR%20NAME%20HERE%3E"
+       class="contact-btn">
+        ✉ Contact Us
+    </a>
+</section>
+{% endblock %}

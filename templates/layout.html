@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Humanaid | Direct Aid for Global Crises{% endblock %}</title>
+
+    <!-- Modern Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- External Global CSS File -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="home" id="home">
+
+    <header>
+        <h1 id="heading">Create A Difference</h1>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Child template content renders here -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p style="font-size: 0.875rem; color: #64748b;">© 2026 Humanaid. All rights reserved.</p>
+    </footer>
+
+    <!-- External Global JavaScript File -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

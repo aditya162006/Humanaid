@@ -1,13 +1,22 @@
-<details class="accordion-item">
-    <summary>{{ donation.title }}</summary>
+<details class="accordion-item" id="{{ donation.id }}">
+    <summary>
+        <div class="summary-content">
+            <span class="cause-title">{{ donation.title }}</span>
+            <a href="https://www.google.com/search?q={{ donation.search_query | urlencode }}"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="learn-more-btn"
+               onclick="event.stopPropagation();">
+               Learn More ↗
+            </a>
+        </div>
+    </summary>
     <div class="links-container">
+        {% for link in donation.links %}
         <div class="donation-link-row">
-            <span class="link-title">{{ donation.link_1.title }}</span>
-            <a href="{{ donation.link_1.url }}" target="_blank" rel="noopener noreferrer" class="donate-btn">Donate Now</a>
+            <span class="link-title">{{ link.title }}</span>
+            <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="donate-btn">Donate Now</a>
         </div>
-        <div class="donation-link-row">
-            <span class="link-title">{{ donation.link_2.title }}</span>
-            <a href="{{ donation.link_2.url }}" target="_blank" rel="noopener noreferrer" class="donate-btn">Donate Now</a>
-        </div>
+        {% endfor %}
     </div>
 </details>
