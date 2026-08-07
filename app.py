@@ -177,9 +177,9 @@ def login_admin():
 def admin_panel():
     if not session.get("is_admin"):
         return redirect(url_for("login_admin"))
-    #if request.method == "POST":
-        # Save crisis into database
-    # Show page
+    if request.method == "POST":
+        if request.form.get()
+    else:
     return render_template("admin.html")
 
 @app.route("/logout")
