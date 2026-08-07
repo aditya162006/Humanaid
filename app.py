@@ -178,21 +178,21 @@ def admin_panel():
         return redirect(url_for("login_admin"))
     return render_template("admin.html")
 
-# 2. Add Entry Route
+# Add Entry Route
 @app.route('/admin/add_entry', methods=['GET', 'POST'])
 def add_entry():
     if not session.get('is_admin'):
         return redirect(url_for("login_admin"))
     return render_template("admin_add_entry.html")
 
-# 3. Edit Entry Route
+# Edit Entry Route
 @app.route('/admin/edit_entry', methods=['GET', 'POST'])
 def edit_entry():
     if not session.get('is_admin'):
         return redirect(url_for("login_admin"))
     return render_template("admin_edit_entry.html")
 
-# 4. Remove Entry Route
+# Remove Entry Route
 @app.route('/admin/remove_entry', methods=['GET', 'POST'])
 def remove_entry():
     if not session.get('is_admin'):
