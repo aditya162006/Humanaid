@@ -1,24 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin Panel Form</title>
-</head>
-<body>
-    <h2>Add New Crisis</h2>
-    <form action="/admin/add_crisis" method="POST">
-        <!-- Username field -->
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br><br>
+{% extends 'layout.html' %}
 
-        <!-- Password field -->
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br><br>
+{% block title %}Humanaid | Admin Dashboard{% endblock %}
 
-        <!-- Submit button -->
-        <button type="submit">Add User</button>
-    </form>
-</body>
-</html>
+{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <div class="admin-header-bar">
+        <h2>Admin Control Panel</h2>
+        <a href="{{ url_for('admin_logout') }}" class="logout-btn">Logout</a>
+    </div>
+
+    <!-- Flash Message Banner -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- 3 Action Buttons / Cards -->
+    <div class="admin-actions-grid">
+        <a href="/admin/add_entry" class="admin-card-btn btn-add">
+            <span class="icon">➕</span>
+            <span class="title">Add Entry</span>
+            <span class="description">Insert a new crisis cause or donation link</span>
+        </a>
+
+        <a href="/admin/edit_entry" class="admin-card-btn btn-edit">
+            <span class="icon">✏️</span>
+            <span class="title">Edit Entry</span>
+            <span class="description">Update titles, URLs, or search queries</span>
+        </a>
+
+        <a href="/admin/remove_entry" class="admin-card-btn btn-remove">
+            <span class="icon">🗑️</span>
+            <span class="title">Remove Entry</span>
+            <span class="description">Delete existing donation categories</span>
+        </a>
+    </div>
+</div>
+{% endblock %}
