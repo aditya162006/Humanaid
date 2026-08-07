@@ -160,7 +160,7 @@ def login_admin():
             session["is_admin"] = True
             return redirect(url_for("admin_panel"))
         else:
-            flash("Invalid credentials.")
+            return apology("Invalid credentials.")
     return render_template("login.html")
 
 @app.route("/admin", methods=["POST"])
