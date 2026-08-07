@@ -113,6 +113,31 @@ def hello_world():
 @app.route("/api/donations")
 def list_donations():
     return jsonify(DONATIONS)
+
+def apology(message, code=400):
+    """Render message as an apology to user."""
+
+    def escape(s):
+        """
+        Escape special characters.
+
+        https://github.com/jacebrowning/memegen#special-characters
+        """
+        for old, new in [
+            ("-", "--"),
+            (" ", "-"),
+            ("_", "__"),
+            ("?", "~q"),
+            ("%", "~p"),
+            ("#", "~h"),
+            ("/", "~s"),
+            ('"', "''"),
+        ]:
+            s = s.replace(old, new)
+        return s
+
+    return render_template("apology.html", top=code, bottom=escape(message)), code
+
 @app.route("/login", methods=["POST"])
 def login_admin():
     if request.method == "POST":
@@ -120,7 +145,7 @@ def login_admin():
             return apology("must provide username")
         elif not request.form.get("possword"):
             return apology("must provide password")
-        
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
