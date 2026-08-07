@@ -156,6 +156,8 @@ def login_admin():
             return apology("must provide password")
         entered_password = request.form.get("password")
         entered_username = request.form.get("username")
+        print("entered_password")
+        print("entered_username")
         if check_password_hash(ADMIN_PASSWORD_HASH, entered_password) and entered_username == ADMIN_USERNAME:
             session["is_admin"] = True
             return redirect(url_for("admin_panel"))
