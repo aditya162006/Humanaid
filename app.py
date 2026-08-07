@@ -4,7 +4,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 import os
 from dotenv import load_dotenv
-
 load_dotenv()
 ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
@@ -184,21 +183,21 @@ def admin_panel():
 def add_entry():
     if not session.get('is_admin'):
         return redirect(url_for("login_admin"))
-    return render_template("add_entry.html")
+    return render_template("admin_add_entry.html")
 
 # 3. Edit Entry Route
 @app.route('/admin/edit_entry', methods=['GET', 'POST'])
 def edit_entry():
     if not session.get('is_admin'):
         return redirect(url_for("login_admin"))
-    return render_template("edit_entry.html")
+    return render_template("admin_edit_entry.html")
 
 # 4. Remove Entry Route
 @app.route('/admin/remove_entry', methods=['GET', 'POST'])
 def remove_entry():
     if not session.get('is_admin'):
         return redirect(url_for("login_admin"))
-    return render_template("remove_entry.html")
+    return render_template("admin_remove_entry.html")
 
 @app.route("/logout")
 def logout():
