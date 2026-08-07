@@ -114,7 +114,7 @@ def hello_world():
 def list_donations():
     return jsonify(DONATIONS)
 
-@app.route("/admin")
+@app.route("/admin", methods=["POST"])
 def admin_panel():
     return render_template("admin.html")
 
