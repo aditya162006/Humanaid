@@ -114,9 +114,12 @@ def hello_world():
 def list_donations():
     return jsonify(DONATIONS)
 
-@app.route("/admin", methods=["POST"])
+@app.route("/admin", methods=["POST","GET"])
 def admin_panel():
-    return render_template("admin.html")
+    if request.method == POST:
+        return render_template("admin.html")
+    else:
+        return render_template("")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
