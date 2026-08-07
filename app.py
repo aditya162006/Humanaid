@@ -115,6 +115,14 @@ DONATIONS = [
         ]
     }
 ]
+
+@app.after_request
+def after_request(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Expires"] = 0
+    response.headers["Pragma"] = "no-cache"
+    return response
+
 @app.route("/")
 def hello_world():
     return render_template("home.html", donations=DONATIONS)
