@@ -114,12 +114,27 @@ def hello_world():
 def list_donations():
     return jsonify(DONATIONS)
 
-@app.route("/admin", methods=['POST','GET'])
-def admin_panel():
-    if request.method == POST:
-        return render_template("admin.html")
+from flask import Flask, request, redirect, url_for, session, render_template
+
+app = Flask(__name__)
+app.secret_key = "supersecretkey"  # Needed for sessions
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        if request.form['username'] == 'admin' and request.form['password'] == '1234':
+            session['admin'] = True
+            return redirect(url_for('admin_dashboard'))
+        else:
+            return "Invalid credentials"
+    return render_template('login.html')
+
+@app.route('/admin', methods=['GET'])
+def admin_dashboard():
+    if 'admin' in session:
+        return render_template('admin.html')
     else:
-        return render_template("admin.html")
+        return redirect(url_for('login'))
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
