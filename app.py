@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
 
 app = Flask(__name__)
 DONATIONS = [
@@ -145,7 +146,7 @@ def apology(message, code=400):
 
     return render_template("apology.html", top=code, bottom=escape(message)), code
 
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods=["POST","GET"])
 def login_admin():
     if request.method == "POST":
         if not request.form.get("username"):
@@ -153,10 +154,12 @@ def login_admin():
         elif not request.form.get("possword"):
             return apology("must provide password")
         entered_password = request.form.get("password")
-        if check_password_hash(ADMIN_PASSWORD_HASH, entered_password):
+        entered_username = request.form.get("username")
+        if check_password_hash(ADMIN_PASSWORD_HASH, entered_password) and entered_username == ADMIN_USERNAME:
             return render_template("admin.html")
         else:
             return apology("Wrong Password")
+    return render_template("login.html")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
