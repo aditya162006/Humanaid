@@ -151,12 +151,12 @@ def login_admin():
     if request.method == "POST":
         if not request.form.get("username"):
             return apology("must provide username")
-        elif not request.form.get("possword"):
+        elif not request.form.get("password"):
             return apology("must provide password")
         entered_password = request.form.get("password")
         entered_username = request.form.get("username")
         if check_password_hash(ADMIN_PASSWORD_HASH, entered_password) and entered_username == ADMIN_USERNAME:
-            return render_template("admin.html")
+            return redirect(url_for("admin"))
         else:
             return apology("Wrong Password")
     return render_template("login.html")
