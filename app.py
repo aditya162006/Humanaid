@@ -10,6 +10,7 @@ ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
+
 DONATIONS = [
     {
         "id": "sudan",
