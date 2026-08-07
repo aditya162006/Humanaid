@@ -1,1 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel Form</title>
+</head>
+<body>
+    <h2>Add New Crisis</h2>
+    <form action="/admin/add_crisis" method="POST">
+        <!-- Username field -->
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <br><br>
 
+        <!-- Password field -->
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br><br>
+
+        <!-- Submit button -->
+        <button type="submit">Add User</button>
+    </form>
+</body>
+</html>
