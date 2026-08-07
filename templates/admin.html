@@ -1,7 +1,182 @@
 {% extends 'layout.html' %}
 
-{% block title %}Humanaid | Home{% endblock %}
+{% block title %}Humanaid | Admin Portal Login{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Admin Authentication Container */
+    .admin-auth-container {
+        max-width: 440px;
+        margin: 3.5rem auto;
+        background-color: #ffffff;
+        padding: 2.5rem;
+        border-radius: 12px;
+        border: 1px solid #cbd5e1;
+        box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+        position: relative;
+    }
+
+    /* Top Accent Line for Admin Interface */
+    .admin-auth-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background-color: #0f172a;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .admin-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .admin-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        background-color: #f1f5f9;
+        color: #0f172a;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.35rem 0.85rem;
+        border-radius: 100px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border: 1px solid #e2e8f0;
+        margin-bottom: 1rem;
+    }
+
+    .admin-header h2 {
+        border-bottom: none;
+        margin: 0 0 0.5rem 0;
+        padding-bottom: 0;
+        font-size: 1.75rem;
+        color: #0f172a;
+    }
+
+    .admin-header p {
+        color: #64748b;
+        font-size: 0.9rem;
+    }
+
+    /* Form Layout & Inputs */
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.875rem;
+        color: #334155;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-family: inherit;
+        font-size: 0.95rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        background-color: #ffffff;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-control:focus {
+        border-color: #0f172a;
+        box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.12);
+    }
+
+    /* Submit Button */
+    .admin-btn {
+        width: 100%;
+        background-color: #0f172a;
+        color: #ffffff;
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 0.85rem 1.5rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        margin-top: 0.5rem;
+    }
+
+    .admin-btn:hover {
+        background-color: #1e293b;
+    }
+
+    /* Security Notice Box */
+    .security-notice {
+        margin-top: 2rem;
+        padding: 0.85rem 1rem;
+        background-color: #f8fafc;
+        border: 1px dashed #cbd5e1;
+        border-radius: 6px;
+        font-size: 0.775rem;
+        color: #64748b;
+        text-align: center;
+        line-height: 1.4;
+    }
+
+    /* Flash Messages Banner */
+    .flash-messages {
+        margin-bottom: 1.5rem;
+    }
+
+    .flash-message {
+        padding: 0.75rem 1rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        background-color: #fef2f2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
+<div class="admin-auth-container">
+    <div class="admin-header">
+        <div class="admin-badge">🔒 Restricted Area</div>
+        <h2>Admin Authentication</h2>
+        <p>Sign in with your administrator credentials</p>
+    </div>
 
-{% endblock%}
+    <!-- Render Flash Error Messages -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('login') }}" method="POST">
+        <div class="form-group">
+            <label for="username">Admin Username or Email</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="admin@humanaid.org" required autofocus autocomplete="off">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="••••••••••••" required>
+        </div>
+
+        <button type="submit" class="admin-btn">Authenticate & Access Dashboard</button>
+    </form>
+
+    <div class="security-notice">
+        <strong>Authorized Personnel Only</strong><br>
+        Unauthorized access attempts are monitored and logged.
+    </div>
+</div>
+{% endblock %}

@@ -114,27 +114,21 @@ def hello_world():
 def list_donations():
     return jsonify(DONATIONS)
 
-from flask import Flask, request, redirect, url_for, session, render_template
+app.secret_key = 'your_super_secret_admin_key'
 
-app = Flask(__name__)
-app.secret_key = "supersecretkey"  # Needed for sessions
-
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/admin/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        if request.form['username'] == 'admin' and request.form['password'] == '1234':
-            session['admin'] = True
-            return redirect(url_for('admin_dashboard'))
-        else:
-            return "Invalid credentials"
-    return render_template('login.html')
+        username = request.form.get('username')
+        password = request.form.get('password')
 
-@app.route('/admin', methods=['GET'])
-def admin_dashboard():
-    if 'admin' in session:
-        return render_template('admin.html')
-    else:
-        return redirect(url_for('login'))
+        # Check against admin credentials
+        if username == "admin" and password == "admin123":
+            return redirect(url_for('home'))  # Route to admin dashboard
+        else:
+            flash("Authentication failed: Invalid admin credentials.")
+
+    return render_template('login.html')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
