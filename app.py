@@ -1,5 +1,5 @@
 #inside the module "flask" import the class "Flask"
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify,request,redirect
 
 app = Flask(__name__)
 DONATIONS = [
@@ -119,7 +119,7 @@ def admin_panel():
     if request.method == POST:
         return render_template("admin.html")
     else:
-        return render_template("")
+        return render_template("admin.html")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
