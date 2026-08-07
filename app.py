@@ -1,5 +1,5 @@
 #inside the module "flask" import the class "Flask"
-from flask import Flask, render_template, jsonify,request,redirect, render_template,url_for, flash
+from flask import Flask, render_template, jsonify,request,redirect, render_template,url_for, flash,session
 from werkzeug.security import generate_password_hash, check_password_hash
 
 import os
@@ -157,10 +157,17 @@ def login_admin():
         entered_password = request.form.get("password")
         entered_username = request.form.get("username")
         if check_password_hash(ADMIN_PASSWORD_HASH, entered_password) and entered_username == ADMIN_USERNAME:
-            return redirect(url_for("admin"))
+            session["is_admin"] = True
+            return redirect(url_for("admin_panel"))
         else:
             flash("Invalid credentials.")
     return render_template("login.html")
+
+@app.route("/admin", methods=["POST"])
+def admin_panel():
+    if not session.get("is_admin"):
+        return redirect(url_for(login_admin))
+    return render_template("admin.html")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
