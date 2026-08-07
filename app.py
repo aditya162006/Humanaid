@@ -146,8 +146,11 @@ def login_admin():
             return apology("must provide username")
         elif not request.form.get("possword"):
             return apology("must provide password")
-    
-
+        entered_password = request.form.get("password")
+        if check_password_hash(ADMIN_PASSWORD_HASH, entered_password):
+            return render_template("admin.html")
+        else:
+            return apology("Wrong Password")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
