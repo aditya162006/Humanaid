@@ -114,21 +114,6 @@ def hello_world():
 def list_donations():
     return jsonify(DONATIONS)
 
-app.secret_key = 'your_super_secret_admin_key'
-
-@app.route('/admin/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-
-        # Check against admin credentials
-        if username == "admin" and password == "admin123":
-            return redirect(url_for('home'))  # Route to admin dashboard
-        else:
-            flash("Authentication failed: Invalid admin credentials.")
-
-    return render_template('login.html')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
