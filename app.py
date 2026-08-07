@@ -165,10 +165,13 @@ def login_admin():
             return apology("Invalid credentials.")
     return render_template("login.html")
 
-@app.route("/admin", methods=["POST"])
+@app.route("/admin", methods=["GET", "POST"])
 def admin_panel():
     if not session.get("is_admin"):
-        return redirect(url_for(login_admin))
+        return redirect(url_for("login_admin"))
+    #if request.method == "POST":
+        # Save crisis into database
+    # Show page
     return render_template("admin.html")
 
 if __name__ == "__main__":
