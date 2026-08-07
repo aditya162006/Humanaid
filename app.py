@@ -158,7 +158,7 @@ def login_admin():
         if check_password_hash(ADMIN_PASSWORD_HASH, entered_password) and entered_username == ADMIN_USERNAME:
             return redirect(url_for("admin"))
         else:
-            return apology("Wrong Password")
+            flash("Invalid credentials.")
     return render_template("login.html")
 
 if __name__ == "__main__":
