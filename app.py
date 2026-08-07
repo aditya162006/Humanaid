@@ -115,7 +115,12 @@ def list_donations():
     return jsonify(DONATIONS)
 @app.route("/login", methods=["POST"])
 def login_admin():
-    if return.form.get
+    if request.method == "POST":
+        if not request.form.get("username"):
+            return apology("must provide username")
+        elif not request.form.get("possword"):
+            return apology("must provide password")
+        
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
