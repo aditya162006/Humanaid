@@ -1,5 +1,5 @@
 #inside the module "flask" import the class "Flask"
-from flask import Flask, render_template, jsonify,request,redirect, render_template
+from flask import Flask, render_template, jsonify,request,redirect, render_template,url_for, flash
 
 app = Flask(__name__)
 DONATIONS = [
