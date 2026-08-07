@@ -113,7 +113,9 @@ def hello_world():
 @app.route("/api/donations")
 def list_donations():
     return jsonify(DONATIONS)
-
+@app.route("/admin", methods=["GET", "POST"])
+def authorization():
+    if re
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
