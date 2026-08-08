@@ -25,8 +25,8 @@
     <div class="links-container">
       {% for link in crisis.donation_links %}
         <div class="donation-link-row">
-          <span class="link-title">{{ links.title }}</span>
-          <a href="{{ links.url }}" target="_blank" rel="noopener noreferrer" class="donate-btn">Donate Now</a>
+          <span class="link-title">{{ link.organization }}</span>
+          <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="donate-btn">Donate Now</a>
         </div>
       {% endfor %}
     </div>
