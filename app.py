@@ -197,6 +197,10 @@ def add_entry():
         linkcount= int(request.form.get("linkcount"))
         link_titles = request.form.getlist("link_titles[]")
         link_urls = request.form.getlist("link_urls[]")
+
+        if linkcount != len(link_titles) or linkcount != len(link_urls):
+            return apology("Invalid donation link data")
+
         with Session(engine) as db_session:
             CRISIS = Crisis(slang=slang, title=title, country=country,category=category,search_query=search_query)
             db_session.add(CRISIS)
