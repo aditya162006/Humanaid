@@ -43,7 +43,7 @@ def list_donations():
     return jsonify(data)
 
 @app.route("/")
-def list_donations():
+def home():
     with Session(engine) as db_session:
         crises = db_session.query(Crisis).all()
         data = [
@@ -60,12 +60,8 @@ def list_donations():
             }
             for crisis in crises
         ]
-    return jsonify(data)
-
-def home():
-    with Session(engine) as db_session:
         crises = db_session.query(Crisis).all()
-    return render_template("home.html", crises=jsonify(data))
+    return render_template("home.html", crises=data)
 
 
 def apology(message, code=400):
