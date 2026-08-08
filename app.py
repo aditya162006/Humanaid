@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from database import engine
-from models import Crisis
+from models import Crisis, DonationLink
 
 import os
 from dotenv import load_dotenv
