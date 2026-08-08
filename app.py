@@ -194,7 +194,12 @@ def add_entry():
         country = request.form.get("country")
         category = request.form.get("category")
         search_query = request.form.get("search_query")
-        linkcount= int(request.form.get("linkcount"))
+        linkcount= request.form.get("linkcount")
+
+        if not linkcount:
+            return apology("Invalid link count")
+
+        linkcount = int(linkcount)
         link_titles = request.form.getlist("link_titles[]")
         link_urls = request.form.getlist("link_urls[]")
 
