@@ -12,11 +12,14 @@ class Crisis(Base):
     country: Mapped[str] = mapped_column(String, nullable=False)
     category: Mapped[str] = mapped_column(String, nullable=False)
     search_query: Mapped[str] = mapped_column(String, nullable=False)
-    
+
+    donation_links = relationship("DonationLink", back_populate="crisis")
 class DonationLink(Base):
     __tablename__ = "donation_links"
     id: Mapped[int] = mapped_column(Integer,primary_key=True,autoincrement=True)
     organization: Mapped[str] = mapped_column(String,nullable=False)
     url: Mapped[str] = mapped_column(String,nullable=False)
     crisis_id: Mapped[int] = mapped_column(ForeignKey("crises.id"),nullable=False)
+
+    crisis = relationship("Crisis", back_populates="donation_links")
 
