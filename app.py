@@ -1,7 +1,7 @@
 #inside the module "flask" import the class "Flask"
 from flask import Flask, render_template, jsonify,request,redirect, render_template,url_for, flash,session
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 from sqlalchemy import select
 from database import engine
 from models import Crisis, DonationLink
@@ -45,7 +45,7 @@ def list_donations():
 @app.route("/")
 def home():
     with Session(engine) as db_session:
-        stmt = select(Crisis)
+        stmt = select(Crisis).options(selectinload(Crisis.donation_links))
         crises = db_session.scalars(stmt).all()
     return render_template(
         "home.html",
