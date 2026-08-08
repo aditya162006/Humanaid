@@ -30,7 +30,24 @@ def home():
 
 @app.route("/api/donations")
 def list_donations():
-    return jsonify(DONATIONS)
+    with Session(engine) as db_session:
+        crises = db_session.query(Crisis).all()
+        data = [
+            {
+                "id": crisis.slang,
+                "title": crisis.title,
+                "country": crisis.country,
+                "category": crisis.category,
+                "search_query": crisis.search_query,
+                "links": [
+                    {"title": link.organization, "url": link.url}
+                    for link in crisis.donation_links
+                ]
+            }
+            for crisis in crises
+        ]
+    return jsonify(data)
+
 
 def apology(message, code=400):
     """Render message as an apology to user."""

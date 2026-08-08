@@ -1,5 +1,6 @@
-from sqlalchemy import String, Integer, ForeignKey
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
+from sqlalchemy import String, Integer, ForeignKey, Column
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session,relationship
+
 
 class Base(DeclarativeBase):
     pass
@@ -13,7 +14,7 @@ class Crisis(Base):
     category: Mapped[str] = mapped_column(String, nullable=False)
     search_query: Mapped[str] = mapped_column(String, nullable=False)
 
-    donation_links = relationship("DonationLink", back_populate="crisis")
+    donation_links = relationship("DonationLink", back_populates="crisis")
 class DonationLink(Base):
     __tablename__ = "donation_links"
     id: Mapped[int] = mapped_column(Integer,primary_key=True,autoincrement=True)
