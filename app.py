@@ -22,12 +22,6 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-@app.route("/")
-def home():
-    with Session(engine) as db_session:
-        crises = db_session.query(Crisis).all()
-    return render_template("home.html", crises=crises)
-
 @app.route("/api/donations")
 def list_donations():
     with Session(engine) as db_session:
@@ -47,6 +41,12 @@ def list_donations():
             for crisis in crises
         ]
     return jsonify(data)
+
+@app.route("/")
+def home():
+    with Session(engine) as db_session:
+        crises = db_session.query(Crisis).all()
+    return render_template("home.html", crises=jsonify(data))
 
 
 def apology(message, code=400):
