@@ -119,6 +119,12 @@ def add_entry():
         link_titles = request.form.getlist("link_titles[]")
         link_urls = request.form.getlist("link_urls[]")
 
+        print("LINK COUNT:", linkcount)
+        print("LINK TITLES:", link_titles)
+        print("LINK URLS:", link_urls)
+        print("NUMBER OF TITLES:", len(link_titles))
+        print("NUMBER OF URLS:", len(link_urls))
+
         if linkcount != len(link_titles) or linkcount != len(link_urls):
             return apology("Invalid donation link data")
 
