@@ -200,11 +200,14 @@ def add_entry():
             CRISIS = Crisis(slang=slang, title=title, country=country,category=category,search_query=search_query)
             db_session.add(CRISIS)
             db_session.commit()
+            crisis_id = CRISIS.id
 
             for i in range(0,linkcount):
                 organization = request.form.get("link_titles[i]")
                 url = request.form.get("link_urls[i]")
-                DONATIONLINK = DonationLink(crisis_id=)
+                DONATIONLINK = DonationLink(crisis_id=crisis_id, organization=organization, url=url)
+                db_session.add(DONATIONLINK)
+                db_session.commit()
         return redirect(url_for("admin_panel"))
     return render_template("admin_add_entry.html")
 
