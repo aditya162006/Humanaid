@@ -194,11 +194,14 @@ def add_entry():
         country = request.form.get("country")
         category = request.form.get("category")
         search_query = request.form.get("search_query")
-        
+        linkcount = request.form.get("link_count")
+
         with Session(engine) as db_session:
             CRISIS = Crisis(slang=slang, title=title, country=country,category=category,search_query=search_query)
             db_session.add(CRISIS)
             db_session.commit()
+
+    
         return redirect(url_for("admin_panel"))
     return render_template("admin_add_entry.html")
 
