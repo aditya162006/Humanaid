@@ -201,7 +201,9 @@ def add_entry():
             db_session.add(CRISIS)
             db_session.commit()
 
-    
+            for i in range(0,linkcount):
+                
+                DONATIONLINK = DonationLink()
         return redirect(url_for("admin_panel"))
     return render_template("admin_add_entry.html")
 
