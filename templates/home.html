@@ -9,29 +9,30 @@
     <h2>DONATION CATEGORIES</h2>
     <div id="categories">
         {% for donation in crises %}
-            <details class="accordion-item" id="{{ donation.id }}">
+  <details class="accordion-item" id="{{ donation.id }}">
     <summary>
-        <div class="summary-content">
-            <span class="cause-title">{{ donation.title }}</span>
-            <a href="https://www.google.com/search?q={{ donation.search_query | urlencode }}"
-               target="_blank"
-               rel="noopener noreferrer"
-               class="learn-more-btn"
-               onclick="event.stopPropagation();">
-               Learn More ↗
-            </a>
-        </div>
+      <div class="summary-content">
+        <span class="cause-title">{{ donation.title }}</span>
+        <a href="https://www.google.com/search?q={{ donation.search_query | urlencode }}"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="learn-more-btn"
+           onclick="event.stopPropagation();">
+           Learn More ↗
+        </a>
+      </div>
     </summary>
     <div class="links-container">
-        {% for link in donation.links %}
+      {% for link in donation.donation_links %}
         <div class="donation-link-row">
-            <span class="link-title">{{ link.title }}</span>
-            <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="donate-btn">Donate Now</a>
+          <span class="link-title">{{ link.organization }}</span>
+          <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="donate-btn">Donate Now</a>
         </div>
-        {% endfor %}
+      {% endfor %}
     </div>
-</details>
-        {% endfor %}
+  </details>
+{% endfor %}
+
     </div>
 </section>
 
