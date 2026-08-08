@@ -188,6 +188,15 @@ def admin_panel():
 def add_entry():
     if not session.get('is_admin'):
         return redirect(url_for("login_admin"))
+    if request.method == 'POST':
+        slang = request.form.get("slang")
+        title = request.form.get("title")
+        country = request.form.get("country")
+        category = request.form.get("category")
+        search_query = request.form.get("search_query")
+
+        with Session(engine) as db_session:
+            crisis = Crisis(slang=slang, title=title, country=country,category=category,search_query=search_query)
     return render_template("admin_add_entry.html")
 
 # Edit Entry Route
