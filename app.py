@@ -202,8 +202,9 @@ def add_entry():
             db_session.commit()
 
             for i in range(0,linkcount):
-                
-                DONATIONLINK = DonationLink()
+                organization = request.form.get("link_titles[i]")
+                url = request.form.get("link_urls[i]")
+                DONATIONLINK = DonationLink(crisis_id=)
         return redirect(url_for("admin_panel"))
     return render_template("admin_add_entry.html")
 
