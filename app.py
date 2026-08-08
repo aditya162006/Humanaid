@@ -33,7 +33,7 @@ def list_donations():
                 "country": crisis.country,
                 "category": crisis.category,
                 "search_query": crisis.search_query,
-                "links": [
+                "link": [
                     {"title": link.organization, "url": link.url}
                     for link in crisis.donation_links
                 ]
