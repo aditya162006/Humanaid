@@ -82,6 +82,7 @@
     // Dynamically appends extra donation link input fields
     function addLinkField() {
         linkCount++;
+        document.getElementById("linkcount").value = linkCount;
         const wrapper = document.getElementById('links-wrapper');
         const linkCard = document.createElement('div');
         linkCard.className = 'link-entry-card';
