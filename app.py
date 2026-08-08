@@ -194,8 +194,7 @@ def add_entry():
         country = request.form.get("country")
         category = request.form.get("category")
         search_query = request.form.get("search_query")
-        linkcount = int(request.form.get("link_count"))
-
+        linkcount=request.form.get("linkcount")
         with Session(engine) as db_session:
             CRISIS = Crisis(slang=slang, title=title, country=country,category=category,search_query=search_query)
             db_session.add(CRISIS)
@@ -207,7 +206,7 @@ def add_entry():
                 url = request.form.get("link_urls[]")
                 DONATIONLINK = DonationLink(crisis_id=crisis_id, organization=organization, url=url)
                 db_session.add(DONATIONLINK)
-                db_session.commit()
+            db_session.commit()
         return redirect(url_for("admin_panel"))
     return render_template("admin_add_entry.html")
 
