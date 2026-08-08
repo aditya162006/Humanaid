@@ -203,8 +203,8 @@ def add_entry():
             crisis_id = CRISIS.id
 
             for i in range(0,linkcount):
-                organization = request.form.get("link_titles[i]")
-                url = request.form.get("link_urls[i]")
+                organization = request.form.get("link_titles[]")
+                url = request.form.get("link_urls[]")
                 DONATIONLINK = DonationLink(crisis_id=crisis_id, organization=organization, url=url)
                 db_session.add(DONATIONLINK)
                 db_session.commit()
