@@ -15,8 +15,6 @@ ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 
-DONATIONS = []
-
 @app.after_request
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
@@ -25,8 +23,10 @@ def after_request(response):
     return response
 
 @app.route("/")
-def hello_world():
-    return render_template("home.html", donations=DONATIONS)
+def home():
+    with Session(engine) as db_session:
+        crises = db_session.query(Crisis).all()
+    return render_template("home.html", crises=crises)
 
 @app.route("/api/donations")
 def list_donations():
