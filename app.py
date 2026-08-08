@@ -194,16 +194,18 @@ def add_entry():
         country = request.form.get("country")
         category = request.form.get("category")
         search_query = request.form.get("search_query")
-        linkcount=request.form.get("linkcount")
+        linkcount= int(request.form.get("linkcount"))
+        link_titles = request.form.getlist("link_titles[]")
+        link_urls = request.form.getlist("link_urls[]")
         with Session(engine) as db_session:
             CRISIS = Crisis(slang=slang, title=title, country=country,category=category,search_query=search_query)
             db_session.add(CRISIS)
-            db_session.commit()
+            db_session.flush()
             crisis_id = CRISIS.id
 
             for i in range(0,linkcount):
-                organization = request.form.get("link_titles[]")
-                url = request.form.get("link_urls[]")
+                organization = link_titles[i]
+                url = link_urls[i]
                 DONATIONLINK = DonationLink(crisis_id=crisis_id, organization=organization, url=url)
                 db_session.add(DONATIONLINK)
             db_session.commit()
