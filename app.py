@@ -142,7 +142,7 @@ def add_entry():
 def edit_entry():
     if not session.get('is_admin'):
         return redirect(url_for("login_admin"))
-    if reques
+
     return render_template("admin_edit_entry.html")
 
 # Remove Entry Route
