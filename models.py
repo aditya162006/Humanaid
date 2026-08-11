@@ -13,7 +13,7 @@ class Crisis(Base):
     country: Mapped[str] = mapped_column(String,nullable=False)
     category: Mapped[str] = mapped_column(String,nullable=False)
     search_query: Mapped[str] = mapped_column(String,nullable=False)
-    donation_links: Mapped[list["DonationLink"]] = relationship(back_populates="crisis")
+    donation_links: Mapped[list["DonationLink"]] = relationship(back_populates="crisis", cascade="all, delete-orphan")
 
 class DonationLink(Base):
     __tablename__ = "donation_links"
