@@ -1,0 +1,153 @@
+{% extends 'layout.html' %}
+
+{% block title %}Humanaid | Edit Crisis Entry{% endblock %}
+
+
+{% block content %}
+<div class="form-container">
+    <div class="form-header">
+        <h2>✏️ Edit Crisis Entry</h2>
+        <a href="{{ url_for('admin_panel') }}" class="back-btn">← Back to Dashboard</a>
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-message flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- 1. CRISIS SELECTOR -->
+    <div class="form-group">
+        <label for="crisis_selector">Select Crisis to Edit</label>
+        <select id="crisis_selector" class="form-control" onchange="loadCrisisData(this.value)">
+            <option value="" disabled selected>-- Choose a Crisis --</option>
+            {% for entry in Entry %}
+                <option value="{{ entry.id }}">{{ entry.title }} — {{ entry.country }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- 2. EDITABLE FIELDS SECTION (Populated upon selection) -->
+    <div id="edit-fields-section">
+        <form action="{{ url_for('edit_entry') }}" method="POST">
+            <!-- Hidden Input for ID -->
+            <input type="hidden" id="entry_id" name="entry_id">
+
+            <!-- Field: Title -->
+            <div class="form-group">
+                <label for="field_title">Crisis Title</label>
+                <div class="field-row">
+                    <input type="text" id="field_title" name="title" class="form-control" readonly required>
+                    <button type="button" class="btn-edit-toggle" onclick="toggleEditMode('field_title', this)">Edit</button>
+                </div>
+            </div>
+
+            <!-- Field: Country -->
+            <div class="form-group">
+                <label for="field_country">Country</label>
+                <div class="field-row">
+                    <input type="text" id="field_country" name="country" class="form-control" readonly required>
+                    <button type="button" class="btn-edit-toggle" onclick="toggleEditMode('field_country', this)">Edit</button>
+                </div>
+            </div>
+
+            <!-- Field: Category -->
+            <div class="form-group">
+                <label for="field_category">Category</label>
+                <div class="field-row">
+                    <input type="text" id="field_category" name="category" class="form-control" readonly required>
+                    <button type="button" class="btn-edit-toggle" onclick="toggleEditMode('field_category', this)">Edit</button>
+                </div>
+            </div>
+
+            <!-- Field: Search Query -->
+            <div class="form-group">
+                <label for="field_search_query">Search Query (Learn More)</label>
+                <div class="field-row">
+                    <input type="text" id="field_search_query" name="search_query" class="form-control" readonly required>
+                    <button type="button" class="btn-edit-toggle" onclick="toggleEditMode('field_search_query', this)">Edit</button>
+                </div>
+            </div>
+
+            <!-- Links Section -->
+            <h3 style="font-size: 1.1rem; color: #0f172a; margin: 1.5rem 0 1rem 0;">Donation Links</h3>
+            <div id="links-container">
+                <!-- Dynamically populated via JavaScript -->
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // JSON Data passed directly from Flask
+    const donationsData = JSON.parse('{{ Entry | tojson | safe }}');
+
+    // Populate Fields when Crisis Selected
+    function loadCrisisData(selectedId) {
+        const entry = donationsData.find(item => item.id === selectedId);
+        if (!entry) return;
+
+        // Display Section
+        document.getElementById('edit-fields-section').style.display = 'block';
+
+        // Set Values
+        document.getElementById('entry_id').value = entry.id;
+        document.getElementById('field_title').value = entry.title;
+        document.getElementById('field_country').value = entry.country;
+        document.getElementById('field_category').value = entry.category;
+        document.getElementById('field_search_query').value = entry.search_query;
+
+        // Reset inputs to read-only state
+        document.querySelectorAll('#edit-fields-section input').forEach(input => {
+            if (input.type !== 'hidden') input.setAttribute('readonly', 'true');
+        });
+
+        // Reset button labels to 'Edit'
+        document.querySelectorAll('.btn-edit-toggle').forEach(btn => {
+            btn.innerText = 'Edit';
+            btn.type = 'button';
+            btn.classList.remove('is-submit');
+        });
+
+        // Render Donation Links
+        const linksContainer = document.getElementById('links-container');
+        linksContainer.innerHTML = '';
+
+        entry.links.forEach((link, index) => {
+            const linkGroup = document.createElement('div');
+            linkGroup.className = 'form-group';
+            linkGroup.innerHTML = `
+                <label>Link ${index + 1} Title & URL</label>
+                <div class="field-row" style="margin-bottom: 0.5rem;">
+                    <input type="text" id="link_title_${index}" name="link_titles[]" value="${link.title}" class="form-control" readonly required>
+                    <button type="button" class="btn-edit-toggle" onclick="toggleEditMode('link_title_${index}', this)">Edit</button>
+                </div>
+                <div class="field-row">
+                    <input type="url" id="link_url_${index}" name="link_urls[]" value="${link.url}" class="form-control" readonly required>
+                    <button type="button" class="btn-edit-toggle" onclick="toggleEditMode('link_url_${index}', this)">Edit</button>
+                </div>
+            `;
+            linksContainer.appendChild(linkGroup);
+        });
+    }
+
+    // Toggle between Edit state and Submit state
+    function toggleEditMode(inputId, button) {
+        const input = document.getElementById(inputId);
+
+        if (input.hasAttribute('readonly')) {
+            // Switch to Edit Mode
+            input.removeAttribute('readonly');
+            input.focus();
+            button.innerText = 'Submit';
+            button.classList.add('is-submit');
+            button.type = 'submit'; // Clicking now submits the form
+        }
+    }
+</script>
+{% endblock %}
