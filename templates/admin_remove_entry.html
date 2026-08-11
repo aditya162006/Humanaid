@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block title %}Humanaid | Add Crisis Entry{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-header">
+        <h2> Remove Crisis Entry</h2>
+        <a href="{{ url_for('admin_panel') }}" class="back-btn">← Back to Dashboard</a>
+    </div>
+
+
+        <button type="submit" class="submit-btn">Remove Crisis From Database</button>
+    </form>
+</div>
+{% endblock %}
