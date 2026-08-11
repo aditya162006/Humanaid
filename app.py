@@ -161,6 +161,8 @@ def edit_entry():
 def update_entry():
     if not session.get('is_admin'):
         return redirect(url_for("login_admin"))
+    if request.method == 'POST':
+        
 
 
 # Remove Entry Route
