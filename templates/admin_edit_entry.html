@@ -24,11 +24,10 @@
 
     <hr>
 
-    <!-- STEP 2: EDIT THE PREFILLED DETAILS -->
+   <!-- STEP 2: EDIT THE PREFILLED DETAILS
     {% if selected_entry %}
     <form action="{{ url_for('edit_entry') }}" method="POST" style="margin-top: 1.5rem;">
 
-        <!-- Keeps track of which crisis ID we are updating -->
         <input type="hidden" name="entry_id" value="{{ selected_entry.id }}">
 
         <p><strong>2. Modify Details:</strong></p>
@@ -56,7 +55,6 @@
         <br>
         <p><strong>Donation Links:</strong></p>
 
-        <!-- Loop through existing links -->
         {% for link in selected_entry.links %}
         <div style="background: #f8fafc; padding: 1rem; border: 1px solid #e2e8f0; margin-bottom: 1rem;">
             <label>Link {{ loop.index }} Title:</label><br>
@@ -74,6 +72,7 @@
     {% else %}
         <p style="color: #64748b;">Please select a crisis above to see and edit its details.</p>
     {% endif %}
-
 </div>
+-->
+
 {% endblock %}
