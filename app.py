@@ -231,7 +231,7 @@ def remove_entry():
     if not session.get('is_admin'):
         return redirect(url_for("login_admin"))
     if request.method == "POST":
-        crisis_id = request.form.get("crisis_id")
+        crisis_id = int(request.form.get("crisis_id"))
         with Session(engine) as db_session:
             crisis = db_session.get(Crisis, crisis_id)
             if crisis is None:
@@ -242,7 +242,7 @@ def remove_entry():
         return redirect(url_for("admin_panel"))
     with Session(engine) as db_session:
         entries = db_session.query(Crisis).all()
-    return render_template("admin_remove_entry.html",entries=entries)
+    return render_template("admin_remove_entry.html",Entry=entries)
 
 
 @app.route("/logout")
