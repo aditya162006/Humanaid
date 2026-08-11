@@ -146,7 +146,7 @@ def edit_entry():
         entries = db_session.query(Crisis).all()
 
     if request.method == 'POST':
-        crisis_id = request.form.get("entry_id")
+        crisis_id = int(request.form.get("crisis_id"))
         found = False
         for entry in entries:
             if entry.id == crisis_id:
