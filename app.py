@@ -155,7 +155,7 @@ def edit_entry():
             return apology("Crisis Not Found")
         else:
             return render_template("admin_edit_entry.html",Entry=entries,crisis_id=crisis_id)
-    return render_template("admin_edit_entry.html", Entry=entries)
+    return render_template("admin_edit_entry.html",Entry=entries,crisis=next(entry for entry in entries if entry.id == crisis_id))
 
 @app.route('/admin/update_field/<int:crisis_id>', methods=['POST'])
 def update_field(crisis_id):
