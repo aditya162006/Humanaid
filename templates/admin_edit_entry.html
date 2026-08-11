@@ -148,7 +148,7 @@
     <hr style="margin-bottom: 2rem; border: none; border-top: 1px solid #e2e8f0;">
 
     <!-- FIELD 1: Crisis Title -->
-    <form action="{{ url_for('update_field', crisis_id=selected_crisis.id) }}" method="POST" class="form-group">
+    <form action="{{ url_for('update_field', crisis_id=crisis.id) }}" method="POST" class="form-group">
         <label for="title_input">Crisis Title</label>
         <input type="hidden" name="field_name" value="title">
         <div class="field-row">
@@ -162,7 +162,7 @@
         <label for="country_input">Country</label>
         <input type="hidden" name="field_name" value="country">
         <div class="field-row">
-            <input type="text" id="country_input" name="field_value" value="{{ selected_crisis.country }}" class="form-control" readonly required>
+            <input type="text" id="country_input" name="field_value" value="{{ crisis.country }}" class="form-control" readonly required>
             <button type="button" class="btn-edit-toggle" onclick="toggleEdit(this, 'country_input')">Edit</button>
         </div>
     </form>
@@ -172,7 +172,7 @@
         <label for="category_input">Category</label>
         <input type="hidden" name="field_name" value="category">
         <div class="field-row">
-            <input type="text" id="category_input" name="field_value" value="{{ selected_crisis.category }}" class="form-control" readonly required>
+            <input type="text" id="category_input" name="field_value" value="{{ crisis.category }}" class="form-control" readonly required>
             <button type="button" class="btn-edit-toggle" onclick="toggleEdit(this, 'category_input')">Edit</button>
         </div>
     </form>
@@ -182,7 +182,7 @@
         <label for="query_input">Search Query (Learn More)</label>
         <input type="hidden" name="field_name" value="search_query">
         <div class="field-row">
-            <input type="text" id="query_input" name="field_value" value="{{ selected_crisis.search_query }}" class="form-control" readonly required>
+            <input type="text" id="query_input" name="field_value" value="{{ crisis.search_query }}" class="form-control" readonly required>
             <button type="button" class="btn-edit-toggle" onclick="toggleEdit(this, 'query_input')">Edit</button>
         </div>
     </form>
