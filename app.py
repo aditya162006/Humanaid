@@ -232,22 +232,24 @@ def remove_entry():
         return redirect(url_for("login_admin"))
     if request.method == "POST":
         entry_id = request.form.get("entry_id")
-    if not entry_id:
-        flash("Please select a crisis to delete.", "error")
-        return redirect(url_for("remove_entry"))
-    crisis_id = int(entry_id)
-    with Session(engine) as db_session:
-        crisis = db_session.get(Crisis, crisis_id)
-        if crisis is None:
-            return apology("Crisis not found")
-        db_session.delete(crisis)
-        db_session.commit()
-    flash("Crisis removed successfully.", "success")
-    return redirect(url_for("admin_panel"))
+        if not entry_id:
+            flash("Please select a crisis to delete.", "error")
+            return redirect(url_for("remove_entry"))
+
+        crisis_id = int(entry_id)
+        with Session(engine) as db_session:
+            crisis = db_session.get(Crisis, crisis_id)
+            if crisis is None:
+                return apology("Crisis not found")
+            db_session.delete(crisis)
+            db_session.commit()
+        flash("Crisis removed successfully.", "success")
+        return redirect(url_for("admin_panel"))
+
+    # GET request falls through to here
     with Session(engine) as db_session:
         entries = db_session.query(Crisis).all()
-    return render_template("admin_remove_entry.html",Entry=entries)
-
+    return render_template("admin_remove_entry.html", Entry=entries)
 
 @app.route("/logout")
 def logout():
