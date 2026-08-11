@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block title %}Humanaid | Add Crisis Entry{% endblock %}
+{% block title %}Humanaid | Remove Crisis Entry{% endblock %}
 
 {% block content %}
 <div class="form-container">
@@ -14,8 +14,8 @@
             <select name="Entry">
                 <option selected value="">Entry</option>
                 <option selected value="">Sport</option>
-            {% for sport in sports %}
-                <option value="{{ sport }}">{{ sport }}</option>
+            {% for entry in Entry %}
+                <option value="{{ Entry.id }}">{{ Entry.id }}</option>
             {% endfor %}
         </select>
     </div>
