@@ -246,7 +246,6 @@ def remove_entry():
         flash("Crisis removed successfully.", "success")
         return redirect(url_for("admin_panel"))
 
-    # GET request falls through to here
     with Session(engine) as db_session:
         entries = db_session.query(Crisis).all()
     return render_template("admin_remove_entry.html", Entry=entries)
