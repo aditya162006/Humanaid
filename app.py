@@ -152,9 +152,9 @@ def remove_entry():
     with Session(engine) as db_session:
         entries = db_session.query(Crisis).all()
     if request.method == 'POST':
-        crisis_id = request.form.get("crisis_id")
+        crisis_id = request.form.get("entry_id")
         with Session(engine) as db_session:
-            crisis = db_session.get(Crisis, crisis_id)
+            crisis = db_session.get(Crisis, int(crisis_id))
             if crisis is None:
                 return apology("Crisis not found")
             db_session.delete(crisis)
