@@ -147,6 +147,7 @@ def edit_entry():
 
     if request.method == 'POST':
         crisis_id = request.form.get("entry_id")
+    
         if crisis_id not in entries:
             return apology("Crisis Not Found")
         else:
