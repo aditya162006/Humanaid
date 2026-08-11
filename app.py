@@ -189,26 +189,6 @@ def update_field(crisis_id):
     # 4. Reload the page showing the updated crisis record
     return redirect(url_for("edit_entry", crisis_id=crisis_id))
 
-# Remove Entry Route
-@app.route('/admin/remove_entry', methods=['GET', 'POST'])
-def remove_entry():
-    if not session.get('is_admin'):
-        return redirect(url_for("login_admin"))
-    with Session(engine) as db_session:
-        entries = db_session.query(Crisis).all()
-    if request.method == 'POST':
-        crisis_id = request.form.get("entry_id")
-        with Session(engine) as db_session:
-            crisis = db_session.get(Crisis, int(crisis_id))
-            if crisis is None:
-                return apology("Crisis not found")
-            db_session.delete(crisis)
-            db_session.commit()
-
-        flash("Crisis removed successfully.", "success")
-        return redirect(url_for("admin_panel"))
-
-    return render_template("admin_remove_entry.html", Entry=entries)
 
 @app.route("/logout")
 def logout():
