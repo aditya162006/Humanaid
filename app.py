@@ -147,8 +147,7 @@ def edit_entry():
 
     if request.method == 'POST':
         crisis_id = request.form.get("entry_id")
-        for entry in entries:
-            if entry.id 
+        if crisis_id not in entries:
             return apology("Crisis Not Found")
         else:
             return render_template("admin_edit_entry.html",Entry=entries,crisis_id=crisis_id)
