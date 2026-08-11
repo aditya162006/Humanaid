@@ -150,8 +150,8 @@ def remove_entry():
     if not session.get('is_admin'):
         return redirect(url_for("login_admin"))
     with Session(engine) as db_session:
-        Entry = Crisis.query.all()
-    return render_template("admin_remove_entry.html", Entry=Entry)
+        entries = db_session.query(Crisis).all()
+    return render_template("admin_remove_entry.html", Entry=entries)
 
 @app.route("/logout")
 def logout():

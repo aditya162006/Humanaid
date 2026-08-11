@@ -13,9 +13,8 @@
             <input autocomplete="off" autofocus name="Entry" placeholder="Name" type="text">
             <select name="Entry">
                 <option selected value="">Entry</option>
-                <option selected value="">Sport</option>
             {% for entry in Entry %}
-                <option value="{{ Entry.id }}">{{ Entry.id }}</option>
+                <option value="{{ Entry.id }}">{{ Entry.slang }}</option>
             {% endfor %}
         </select>
     </div>
