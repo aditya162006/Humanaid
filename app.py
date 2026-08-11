@@ -190,6 +190,41 @@ def update_field(crisis_id):
     # 4. Reload the page showing the updated crisis record
     return redirect(url_for("edit_entry"))
 
+@app.route('/admin/manage_link', methods=['POST'])
+def manage_link():
+    if not session.get('is_admin'):
+        return redirect(url_for("login_admin"))
+
+    action = request.form.get("action")  # "update", "delete", or "add"
+    crisis_id = request.form.get("crisis_id")
+
+    with Session(engine) as db_session:
+        if action == "add":
+            link = DonationLink(
+                crisis_id=int(crisis_id),
+                organization=request.form.get("organization"),
+                url=request.form.get("url")
+            )
+            db_session.add(link)
+            flash("Link added!", "success")
+
+        elif action == "update":
+            link = db_session.query(DonationLink).get(int(request.form.get("link_id")))
+            if link:
+                link.organization = request.form.get("organization")
+                link.url = request.form.get("url")
+                flash("Link updated!", "success")
+
+        elif action == "delete":
+            link = db_session.query(DonationLink).get(int(request.form.get("link_id")))
+            if link:
+                db_session.delete(link)
+                flash("Link deleted!", "success")
+
+        db_session.commit()
+
+    return redirect(url_for("edit_entry") + f"?crisis_id={crisis_id}")
+
 
 @app.route("/logout")
 def logout():

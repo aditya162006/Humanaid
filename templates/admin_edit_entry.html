@@ -186,7 +186,43 @@
             <button type="button" class="btn-edit-toggle" onclick="toggleEdit(this, 'query_input')">Edit</button>
         </div>
     </form>
-    {% endif %}
+
+    <hr style="margin: 2rem 0; border: none; border-top: 1px solid #e2e8f0;">
+<h3 style="font-size: 1.1rem; color: #0f172a; margin-bottom: 1.25rem;">🔗 Donation Links</h3>
+
+    {% for link in crisis.donation_links %}
+    <form action="{{ url_for('manage_link') }}" method="POST" class="form-group"
+        style="background:#f8fafc; padding:1rem; border-radius:8px; border:1px solid #e2e8f0; margin-bottom:1rem;">
+        <input type="hidden" name="crisis_id" value="{{ crisis.id }}">
+        <input type="hidden" name="link_id" value="{{ link.id }}">
+
+        <div class="field-row" style="margin-bottom:0.75rem;">
+            <input type="text" id="org_{{ link.id }}" name="organization" value="{{ link.organization }}" class="form-control" readonly>
+            <input type="text" id="url_{{ link.id }}" name="url" value="{{ link.url }}" class="form-control" readonly>
+            <button type="button" class="btn-edit-toggle" onclick="toggleLinkEdit(this, '{{ link.id }}')">Edit</button>
+            <button type="submit" name="action" value="delete" class="btn-edit-toggle"
+                style="color:#dc2626;" onclick="return confirm('Delete this link?')">🗑</button>
+        </div>
+        <!-- hidden until edit is clicked -->
+        <button type="submit" name="action" value="update" id="submit_{{ link.id }}"
+            class="btn-edit-toggle is-submit" style="display:none; width:100%;">Save Changes</button>
+    </form>
+    {% else %}
+    <p style="color:#64748b; font-size:0.9rem;">No donation links yet.</p>
+    {% endfor %}
+
+    <!-- Add new link -->
+    <form action="{{ url_for('manage_link') }}" method="POST" class="form-group"
+        style="padding:1rem; border-radius:8px; border:1px dashed #cbd5e1; margin-top:1rem;">
+        <input type="hidden" name="crisis_id" value="{{ crisis.id }}">
+        <input type="hidden" name="action" value="add">
+        <div class="field-row">
+            <input type="text" name="organization" class="form-control" placeholder="Organization" required>
+            <input type="text" name="url" class="form-control" placeholder="https://..." required>
+            <button type="submit" class="btn-edit-toggle is-submit">Add</button>
+        </div>
+    </form>
+        {% endif %}
 
 </div>
 {% endblock %}
@@ -208,6 +244,12 @@
                 buttonElement.closest('form').submit();
             };
         }
+    }
+    function toggleLinkEdit(buttonElement, linkId) {
+    document.getElementById('org_' + linkId).removeAttribute('readonly');
+    document.getElementById('url_' + linkId).removeAttribute('readonly');
+    document.getElementById('submit_' + linkId).style.display = 'block';
+    buttonElement.style.display = 'none';
     }
 </script>
 {% endblock %}
