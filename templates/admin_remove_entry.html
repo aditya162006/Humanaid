@@ -5,21 +5,37 @@
 {% block content %}
 <div class="form-container">
     <div class="form-header">
-        <h2> Remove Crisis Entry</h2>
+        <h2>🗑️ Remove Crisis Entry</h2>
         <a href="{{ url_for('admin_panel') }}" class="back-btn">← Back to Dashboard</a>
     </div>
-    <div>
-        <form action="{{ url_for('remove_entry') }}" method="post">
-            <input autocomplete="off" autofocus name="Entry" placeholder="Name" type="text">
-            <select name="Entry">
-                <option selected value="">Entry</option>
-            {% for entry in Entry %}
-                <option value="{{ entry.id }}">{{ entry.title }} — {{ entry.country }}</option>
-            {% endfor %}
-        </select>
+
+    <!-- Render Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-message flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="warning-box">
+        <strong>⚠️ Warning:</strong> Deleting a crisis entry will permanently remove it and all associated donation links from your public database.
     </div>
 
-        <button type="submit" class="submit-btn">Remove Crisis From Database</button>
+    <form action="{{ url_for('remove_entry') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this entry? This action cannot be undone.');">
+
+        <!-- Select Existing Entry Dropdown -->
+        <div class="form-group">
+            <label for="entry_id">Select Existing Entry to Delete</label>
+            <select name="entry_id" id="entry_id" class="form-control">
+                <option value="" disabled selected>-- Choose a Crisis --</option>
+                {% for entry in Entry %}
+                    <option value="{{ entry.id }}">{{ entry.title }} — {{ entry.country }} (ID: {{ entry.id }})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn-danger">Delete Crisis From Database</button>
     </form>
 </div>
 {% endblock %}
