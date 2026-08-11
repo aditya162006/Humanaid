@@ -8,7 +8,17 @@
         <h2> Remove Crisis Entry</h2>
         <a href="{{ url_for('admin_panel') }}" class="back-btn">← Back to Dashboard</a>
     </div>
-
+    <div>
+        <form action="/remove" method="post">
+            <input autocomplete="off" autofocus name="Entry" placeholder="Name" type="text">
+            <select name="Entry">
+                <option selected value="">Entry</option>
+                <option selected value="">Sport</option>
+            {% for sport in sports %}
+                <option value="{{ sport }}">{{ sport }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
         <button type="submit" class="submit-btn">Remove Crisis From Database</button>
     </form>
