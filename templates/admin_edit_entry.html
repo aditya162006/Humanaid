@@ -84,7 +84,7 @@
 {% block extra_js %}
 <script>
     // JSON Data passed directly from Flask
-    const donationsData = {{ Entry | tojson }};
+    const donationsData = JSON.parse('{{ Entry | tojson | safe }}');
 
     // Populate Fields when Crisis Selected
     function loadCrisisData(selectedId) {
