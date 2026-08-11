@@ -9,18 +9,20 @@
     <a href="{{ url_for('admin_panel') }}">← Back to Dashboard</a>
     <br><br>
 
-    <!-- STEP 1: SELECT A CRISIS TO EDIT -->
-    <form action="{{ url_for('edit_entry') }}" method="GET" style="margin-bottom: 2rem;">
-        <label><strong>1. Select Crisis:</strong></label><br>
-        <select name="selected_id" style="width: 100%; padding: 0.5rem; margin-top: 0.5rem;" required>
-            <option value="" disabled {% if not selected_entry %}selected{% endif %}>-- Select a Crisis --</option>
-            {% for entry in Entry %}
-                <option value="{{ entry.id }}" {% if selected_entry and selected_entry.id == entry.id %}selected{% endif %}>
-                    {{ entry.title }} ({{ entry.country }})
-                </option>
-            {% endfor %}
-        </select>
-        <button type="submit" style="margin-top: 0.5rem; padding: 0.5rem 1rem;">Load Details</button>
+   <form action="{{ url_for('remove_entry') }}" method="POST">
+
+        <!-- Select Existing Entry Dropdown -->
+        <div class="form-group">
+            <label for="entry_id">Select Existing Entry to Edit</label>
+            <select name="entry_id" id="entry_id" class="form-control">
+                <option value="" disabled selected>-- Choose a Crisis --</option>
+                {% for entry in Entry %}
+                    <option value="{{ entry.id }}">{{ entry.title }} — {{ entry.country }} (ID: {{ entry.id }})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn-danger">Delete Crisis From Database</button>
     </form>
 
     <hr>
