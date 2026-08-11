@@ -133,7 +133,7 @@
                 <select name="crisis_id" id="crisis_id" class="form-control" required>
                     <option value="" disabled {% if not selected_crisis %}selected{% endif %}>-- Choose a Crisis --</option>
                     {% for entry in Entry %}
-                        <option value="{{ entry.id }}" {% if selected_crisis and selected_crisis.id == entry.id %}selected{% endif %}>
+                        <option value="{{ entry.id }}" {% if crisis and crisis.id == entry.id %}selected{% endif %}>
                             {{ entry.title }} (ID: {{ entry.id }})
                         </option>
                     {% endfor %}
