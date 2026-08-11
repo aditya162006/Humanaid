@@ -143,7 +143,9 @@ def edit_entry():
     if not session.get('is_admin'):
         return redirect(url_for("login_admin"))
     with Session(engine) as db_session:
-        entries = db_session.query(Crisis).all()
+
+    if request.method == 'POST':
+        crisis_id = request.form.get("entry_id")
     return render_template("admin_edit_entry.html", Entry=entries)
 
 # Remove Entry Route
