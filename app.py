@@ -157,13 +157,37 @@ def edit_entry():
             return render_template("admin_edit_entry.html",Entry=entries,crisis_id=crisis_id)
     return render_template("admin_edit_entry.html", Entry=entries)
 
-@app.route('/admin/edit_entry/<int:crisis_id>', methods=['POST'])
-def update_entry():
+@app.route('/admin/update_field/<int:crisis_id>', methods=['POST'])
+def update_field(crisis_id):
     if not session.get('is_admin'):
         return redirect(url_for("login_admin"))
-    if request.method == 'POST':
-        
 
+    field_name = request.form.get("field_name")
+    field_value = request.form.get("field_value")
+
+    with Session(engine) as db_session:
+        # 1. Fetch the crisis record by ID
+        crisis = db_session.query(Crisis).get(crisis_id)
+
+        if crisis:
+            # 2. Directly update whichever field was edited
+            if field_name == 'title':
+                crisis.title = field_value
+            elif field_name == 'country':
+                crisis.country = field_value
+            elif field_name == 'category':
+                crisis.category = field_value
+            elif field_name == 'search_query':
+                crisis.search_query = field_value
+
+            # 3. Save changes to Turso / Database
+            db_session.commit()
+            flash("Field updated successfully!", "success")
+        else:
+            flash("Crisis record not found.", "error")
+
+    # 4. Reload the page showing the updated crisis record
+    return redirect(url_for("edit_entry", crisis_id=crisis_id))
 
 # Remove Entry Route
 @app.route('/admin/remove_entry', methods=['GET', 'POST'])
