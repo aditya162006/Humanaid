@@ -14,7 +14,7 @@
             <select name="Entry">
                 <option selected value="">Entry</option>
             {% for entry in Entry %}
-                <option value="{{ Entry.slang }}">{{ Entry.slang }}</option>
+                <option value="{{ entry.id }}">{{ entry.title }} — {{ entry.country }}</option>
             {% endfor %}
         </select>
     </div>
