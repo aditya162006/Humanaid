@@ -154,9 +154,10 @@ def edit_entry():
     return render_template("admin_edit_entry.html", Entry=entries)
 
 @app.route('/admin/edit_entry/<int:crisis_id>', methods=['POST'])
-def edit_entry():
+def update_entry():
     if not session.get('is_admin'):
         return redirect(url_for("login_admin"))
+
 
 # Remove Entry Route
 @app.route('/admin/remove_entry', methods=['GET', 'POST'])
