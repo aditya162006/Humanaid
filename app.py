@@ -152,13 +152,15 @@ def remove_entry():
     with Session(engine) as db_session:
         entries = db_session.query(Crisis).all()
     if request.method == 'POST':
-        crisis_id = request.form.get("entry_id")
         with Session(engine) as db_session:
-        # Find the row you want to delete
-            crisis = db_session.scalars(select(Crisis).where(Crisis.slang == "crisis_id")).first()
-        if crisis:
-            db_session.delete(crisis)   # mark for deletion
-            db_session.commit()         # commit changes to DB
+            crisis = db_session.get(Crisis, crisis_id)
+            if crisis is None:
+                return apology("Crisis not found")
+            db_session.delete(crisis)
+            db_session.commit()
+        flash("Crisis removed successfully.", "success")
+        return redirect(url_for("admin_panel"))
+
     return render_template("admin_remove_entry.html", Entry=entries)
 
 @app.route("/logout")
