@@ -197,12 +197,16 @@
         const inputField = document.getElementById(inputId);
 
         if (inputField.hasAttribute('readonly')) {
+            // First click: just unlock the field, don't submit
             inputField.removeAttribute('readonly');
             inputField.focus();
-
             buttonElement.innerText = 'Submit';
             buttonElement.classList.add('is-submit');
-            buttonElement.type = 'submit';
+
+            // Now swap onclick so the NEXT click submits the form
+            buttonElement.onclick = function () {
+                buttonElement.closest('form').submit();
+            };
         }
     }
 </script>

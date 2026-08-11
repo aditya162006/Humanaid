@@ -142,20 +142,21 @@ def add_entry():
 def edit_entry():
     if not session.get('is_admin'):
         return redirect(url_for("login_admin"))
+
     with Session(engine) as db_session:
         entries = db_session.query(Crisis).all()
 
-    if request.method == 'POST':
-        crisis_id = int(request.form.get("crisis_id"))
-        found = False
-        for entry in entries:
-            if entry.id == crisis_id:
-                found = True
-        if not found:
-            return apology("Crisis Not Found")
-        else:
-            return render_template("admin_edit_entry.html",Entry=entries,crisis_id=crisis_id)
-    return render_template("admin_edit_entry.html",Entry=entries,crisis=next(entry for entry in entries if entry.id == crisis_id))
+        if request.method == 'POST':
+            crisis_id = int(request.form.get("crisis_id"))
+            # Find the matching crisis object
+            crisis = next((e for e in entries if e.id == crisis_id), None)
+            if not crisis:
+                return apology("Crisis Not Found")
+            # Pass the actual crisis object, not just the id
+            return render_template("admin_edit_entry.html", Entry=entries, crisis=crisis)
+
+    # GET request — no crisis selected yet, so don't pass crisis at all
+    return render_template("admin_edit_entry.html", Entry=entries)
 
 @app.route('/admin/update_field/<int:crisis_id>', methods=['POST'])
 def update_field(crisis_id):
