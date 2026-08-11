@@ -158,7 +158,8 @@ def remove_entry():
             if crisis is None:
                 return apology("Crisis not found")
             db_session.delete(crisis)
-            db_session.commit()
+            db_session.flush()
+            
         flash("Crisis removed successfully.", "success")
         return redirect(url_for("admin_panel"))
 
