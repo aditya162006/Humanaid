@@ -143,7 +143,7 @@ def edit_entry():
     if not session.get('is_admin'):
         return redirect(url_for("login_admin"))
     with Session(engine) as db_session:
-        entries = [id for (id,) in db_session.query(Crisis.id).all()]
+        entries = db_session.query(Crisis).all()
 
     if request.method == 'POST':
         crisis_id = request.form.get("entry_id")
