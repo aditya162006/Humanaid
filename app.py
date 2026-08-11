@@ -151,6 +151,8 @@ def remove_entry():
         return redirect(url_for("login_admin"))
     with Session(engine) as db_session:
         entries = db_session.query(Crisis).all()
+    if request.method == 'POST':
+        
     return render_template("admin_remove_entry.html", Entry=entries)
 
 @app.route("/logout")
