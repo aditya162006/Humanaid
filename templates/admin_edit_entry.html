@@ -3,31 +3,33 @@
 {% block title %}Humanaid | Edit Crisis Entry{% endblock %}
 
 {% block content %}
+<div style="max-width: 600px; margin: 2rem auto; background: #ffffff; padding: 2rem; border-radius: 8px; border: 1px solid #cbd5e1;">
 
     <h2>Edit Crisis Entry</h2>
     <a href="{{ url_for('admin_panel') }}">← Back to Dashboard</a>
     <br><br>
 
     <!-- STEP 1: SELECT A CRISIS TO EDIT -->
-    <form action="{{ url_for('edit_entry') }}" method="POST">
-
-        <!-- Select Existing Entry Dropdown -->
-        <div class="form-group">
-            <label for="entry_id">Select Existing Entry to Edit</label>
-            <select name="entry_id" id="entry_id" class="form-control">
-                <option value="" disabled selected>-- Choose a Crisis --</option>
-                {% for entry in Entry %}
-                    <option value="{{ entry.id }}">{{ entry.title }} — {{ entry.country }} (ID: {{ entry.id }})</option>
-                {% endfor %}
-            </select>
-        </div>
+    <form action="{{ url_for('edit_entry') }}" method="GET" style="margin-bottom: 2rem;">
+        <label><strong>1. Select Crisis:</strong></label><br>
+        <select name="selected_id" style="width: 100%; padding: 0.5rem; margin-top: 0.5rem;" required>
+            <option value="" disabled {% if not selected_entry %}selected{% endif %}>-- Select a Crisis --</option>
+            {% for entry in Entry %}
+                <option value="{{ entry.id }}" {% if selected_entry and selected_entry.id == entry.id %}selected{% endif %}>
+                    {{ entry.title }} ({{ entry.country }})
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit" style="margin-top: 0.5rem; padding: 0.5rem 1rem;">Load Details</button>
+    </form>
 
     <hr>
 
-   <!-- STEP 2: EDIT THE PREFILLED DETAILS
+    <!-- STEP 2: EDIT THE PREFILLED DETAILS -->
     {% if selected_entry %}
     <form action="{{ url_for('edit_entry') }}" method="POST" style="margin-top: 1.5rem;">
 
+        <!-- Keeps track of which crisis ID we are updating -->
         <input type="hidden" name="entry_id" value="{{ selected_entry.id }}">
 
         <p><strong>2. Modify Details:</strong></p>
@@ -55,6 +57,7 @@
         <br>
         <p><strong>Donation Links:</strong></p>
 
+        <!-- Loop through existing links -->
         {% for link in selected_entry.links %}
         <div style="background: #f8fafc; padding: 1rem; border: 1px solid #e2e8f0; margin-bottom: 1rem;">
             <label>Link {{ loop.index }} Title:</label><br>
@@ -72,7 +75,6 @@
     {% else %}
         <p style="color: #64748b;">Please select a crisis above to see and edit its details.</p>
     {% endif %}
-</div>
--->
 
+</div>
 {% endblock %}
