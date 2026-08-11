@@ -187,7 +187,7 @@ def update_field(crisis_id):
             flash("Crisis record not found.", "error")
 
     # 4. Reload the page showing the updated crisis record
-    return redirect(url_for("edit_entry", crisis_id=crisis_id))
+    return redirect(url_for("edit_entry"))
 
 
 @app.route("/logout")
