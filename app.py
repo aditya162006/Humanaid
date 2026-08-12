@@ -247,8 +247,10 @@ def remove_entry():
         if not entry_id:
             flash("Please select a crisis to delete.", "error")
             return redirect(url_for("remove_entry"))
-
-        crisis_id = int(entry_id)
+        try:
+            crisis_id = int(entry_id)
+        except ValueError:
+            return apology("Invalid entry ID", 400)
         with Session(engine) as db_session:
             crisis = db_session.get(Crisis, crisis_id)
             if crisis is None:
