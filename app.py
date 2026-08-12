@@ -123,8 +123,10 @@ def add_entry():
 
         if not linkcount:
             return apology("Invalid link count")
-
-        linkcount = int(linkcount)
+        try:
+            linkcount = int(linkcount)
+        except ValueError:
+            return apology("Invalid entry ID", 400)
         link_titles = request.form.getlist("link_titles[]")
         link_urls = request.form.getlist("link_urls[]")
 
@@ -156,7 +158,10 @@ def edit_entry():
         entries = db_session.query(Crisis).all()
 
         if request.method == 'POST':
-            crisis_id = int(request.form.get("crisis_id"))
+            try:
+                crisis_id = int(request.form.get("crisis_id"))
+            except ValueError:
+                return apology("Invalid entry ID", 400)
             # Find the matching crisis object
             crisis = next((e for e in entries if e.id == crisis_id), None)
             if not crisis:
