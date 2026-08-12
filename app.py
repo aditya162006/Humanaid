@@ -9,6 +9,7 @@ from flask_wtf.csrf import CSRFProtect
 import os
 from dotenv import load_dotenv
 from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 load_dotenv()
 ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
@@ -17,6 +18,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 csrf = CSRFProtect(app)
 limiter = Limiter(app, key_func=get_remote_address)
+
 @app.after_request
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
@@ -78,6 +80,7 @@ def apology(message, code=400):
     return render_template("apology.html", top=code, bottom=escape(message)), code
 
 @app.route("/login", methods=["POST","GET"])
+@limiter.limit("10 per minute")
 def login_admin():
     if request.method == "POST":
         if not request.form.get("username"):
