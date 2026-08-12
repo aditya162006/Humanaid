@@ -14,7 +14,7 @@ ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
-
+csrf = CSRFProtect(app)
 @app.after_request
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
