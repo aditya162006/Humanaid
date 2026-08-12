@@ -20,6 +20,7 @@
 
     <!-- 1. CRISIS SELECTOR -->
     <form action="{{ url_for('edit_entry') }}" method="POST" style="margin-bottom: 2rem;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="form-group">
             <label for="crisis_id">Select Crisis Record</label>
             <div class="field-row">
@@ -42,6 +43,7 @@
 
     <!-- FIELD 1: Crisis Title -->
     <form action="{{ url_for('update_field', crisis_id=crisis.id) }}" method="POST" class="form-group">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="title_input">Crisis Title</label>
         <input type="hidden" name="field_name" value="title">
         <div class="field-row">
@@ -52,6 +54,7 @@
 
     <!-- FIELD 2: Country -->
     <form action="{{ url_for('update_field', crisis_id=crisis.id) }}" method="POST" class="form-group">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="country_input">Country</label>
         <input type="hidden" name="field_name" value="country">
         <div class="field-row">
@@ -62,6 +65,7 @@
 
     <!-- FIELD 3: Category -->
     <form action="{{ url_for('update_field', crisis_id=crisis.id) }}" method="POST" class="form-group">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="category_input">Category</label>
         <input type="hidden" name="field_name" value="category">
         <div class="field-row">
@@ -72,6 +76,7 @@
 
     <!-- FIELD 4: Search Query -->
     <form action="{{ url_for('update_field', crisis_id=crisis.id) }}" method="POST" class="form-group">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="query_input">Search Query (Learn More)</label>
         <input type="hidden" name="field_name" value="search_query">
         <div class="field-row">
@@ -86,6 +91,7 @@
     {% for link in crisis.donation_links %}
     <form action="{{ url_for('manage_link') }}" method="POST" class="form-group"
         style="background:#f8fafc; padding:1rem; border-radius:8px; border:1px solid #e2e8f0; margin-bottom:1rem;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="crisis_id" value="{{ crisis.id }}">
         <input type="hidden" name="link_id" value="{{ link.id }}">
 
@@ -107,6 +113,7 @@
     <!-- Add new link -->
     <form action="{{ url_for('manage_link') }}" method="POST" class="form-group"
         style="padding:1rem; border-radius:8px; border:1px dashed #cbd5e1; margin-top:1rem;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="crisis_id" value="{{ crisis.id }}">
         <input type="hidden" name="action" value="add">
         <div class="field-row">
