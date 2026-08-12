@@ -235,7 +235,7 @@ def manage_link():
 
         db_session.commit()
 
-    return redirect(url_for("edit_entry") + f"?crisis_id={crisis_id}")
+    return redirect(url_for("edit_entry", crisis_id=crisis_id))
 
 @app.route('/admin/remove_entry', methods=['GET', 'POST'])
 def remove_entry():
