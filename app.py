@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session, selectinload
 from sqlalchemy import select
 from database import engine
 from models import Crisis, DonationLink
-
+from flask_wtf.csrf import CSRFProtect
 import os
 from dotenv import load_dotenv
 load_dotenv()
