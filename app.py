@@ -26,7 +26,7 @@ app.config["SESSION_COOKIE_HTTPONLY"] = True   # blocks JS access to cookie
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"  # partial CSRF protection
 app.config["SESSION_COOKIE_SECURE"] = os.getenv("FLASK_ENV") == "production"     # HTTPS only (enable in prod)
 csrf = CSRFProtect(app)
-limiter = Limiter(app, key_func=get_remote_address)
+limiter = Limiter(key_func=get_remote_address,app=app)
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=2)
 
 @app.after_request
