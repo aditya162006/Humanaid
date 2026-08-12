@@ -8,6 +8,7 @@
     <h2>Admin Login</h2>
 
     <form action="{{ request.path }}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="form-group">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" class="form-control" required autofocus autocomplete="off">
