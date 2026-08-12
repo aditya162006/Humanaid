@@ -14,17 +14,17 @@ from datetime import timedelta
 load_dotenv()
 ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
-
+SECRET_KEY = os.getenv("SECRET_KEY")
 if not SECRET_KEY:
     raise RuntimeError("FATAL: SECRET_KEY is not set in environment!")
 if not ADMIN_PASSWORD_HASH or not ADMIN_USERNAME:
     raise RuntimeError("FATAL: Admin credentials not configured!")
 
 app = Flask(__name__)
-app.secret_key = os.getenv("SECRET_KEY")
+app.secret_key = SECRET_KEY
 app.config["SESSION_COOKIE_HTTPONLY"] = True   # blocks JS access to cookie
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"  # partial CSRF protection
-app.config["SESSION_COOKIE_SECURE"] = True      # HTTPS only (enable in prod)
+app.config["SESSION_COOKIE_SECURE"] = os.getenv("FLASK_ENV") == "production"     # HTTPS only (enable in prod)
 csrf = CSRFProtect(app)
 limiter = Limiter(app, key_func=get_remote_address)
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=2)
