@@ -196,7 +196,10 @@ def manage_link():
         return redirect(url_for("login_admin"))
 
     action = request.form.get("action")  # "update", "delete", or "add"
-    crisis_id = request.form.get("crisis_id")
+    try:
+        crisis_id = int(request.form.get("crisis_id", ""))
+    except (ValueError, TypeError):
+        return apology("Invalid crisis ID", 400)
 
     with Session(engine) as db_session:
         if action == "add":
