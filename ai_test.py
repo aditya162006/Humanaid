@@ -9,7 +9,7 @@ client = genai.Client(
 )
 
 response = client.models.generate_content(
-    model="Gemini 3.6 Flash",
+    model="gemini-2.5-flash",  # Fixed: lowercase slug format
     contents="Explain the humanitarian crisis in Sudan in 100 words."
 )
 
