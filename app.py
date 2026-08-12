@@ -34,7 +34,8 @@ def after_request(response):
 @app.route("/api/donations")
 def list_donations():
     with Session(engine) as db_session:
-        crises = db_session.query(Crisis).all()
+        stmt = select(Crisis).options(selectinload(Crisis.donation_links))
+        crises = db_session.scalars(stmt).all()
         data = [
             {
                 "id": crisis.slang,
