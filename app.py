@@ -8,6 +8,7 @@ from models import Crisis, DonationLink
 from flask_wtf.csrf import CSRFProtect
 import os
 from dotenv import load_dotenv
+from flask_limiter import Limiter
 load_dotenv()
 ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
@@ -15,6 +16,7 @@ ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 csrf = CSRFProtect(app)
+limiter = Limiter(app, key_func=get_remote_address)
 @app.after_request
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
@@ -84,8 +86,6 @@ def login_admin():
             return apology("must provide password")
         entered_password = request.form.get("password")
         entered_username = request.form.get("username")
-        print(entered_password)
-        print(entered_username)
         if check_password_hash(ADMIN_PASSWORD_HASH, entered_password) and entered_username == ADMIN_USERNAME:
             session["is_admin"] = True
             return redirect(url_for("admin_panel"))
