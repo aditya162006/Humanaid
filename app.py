@@ -187,7 +187,7 @@ def update_field(crisis_id):
 
     with Session(engine) as db_session:
         # 1. Fetch the crisis record by ID
-        crisis = db_session.query(Crisis).get(crisis_id)
+        crisis = db_session.get(Crisis, crisis_id)
 
         if crisis:
             # 2. Directly update whichever field was edited
