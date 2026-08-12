@@ -15,6 +15,11 @@ load_dotenv()
 ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
 
+if not SECRET_KEY:
+    raise RuntimeError("FATAL: SECRET_KEY is not set in environment!")
+if not ADMIN_PASSWORD_HASH or not ADMIN_USERNAME:
+    raise RuntimeError("FATAL: Admin credentials not configured!")
+
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 app.config["SESSION_COOKIE_HTTPONLY"] = True   # blocks JS access to cookie
