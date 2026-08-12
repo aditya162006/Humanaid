@@ -10,14 +10,19 @@ import os
 from dotenv import load_dotenv
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from datetime import timedelta
 load_dotenv()
 ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
+app.config["SESSION_COOKIE_HTTPONLY"] = True   # blocks JS access to cookie
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"  # partial CSRF protection
+app.config["SESSION_COOKIE_SECURE"] = True      # HTTPS only (enable in prod)
 csrf = CSRFProtect(app)
 limiter = Limiter(app, key_func=get_remote_address)
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=2)
 
 @app.after_request
 def after_request(response):
