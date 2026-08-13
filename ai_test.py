@@ -9,7 +9,7 @@ client = genai.Client(
 )
 
 response = client.models.generate_content(
-    model="gemini-3.5-flash",  # Or "gemini-3.6-flash" / "gemini-flash-latest"
+    model="gemini-3.5-flash",
     contents="Explain the humanitarian crisis in Sudan in 100 words."
 )
 
