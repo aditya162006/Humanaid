@@ -1,0 +1,94 @@
+{% extends 'layout.html' %}
+
+{% block title %}Humanaid | Submit Crisis Entry{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-header">
+        <h2> Add New Crisis Entry</h2>
+        <a href="{{ url_for('home') }}" class="back-btn">← Back to Home</a>
+    </div>
+    
+    <form action="{{ url_for('submit_panel') }}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <!-- Crisis ID & Country -->
+        <div class="form-row">
+            <div class="form-group">
+                <label for="slang">Crisis ID (e.g., sudan)</label>
+                <input type="text" id="slang" name="slang" class="form-control" placeholder="sudan" required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="country">Country</label>
+                <input type="text" id="country" name="country" class="form-control" placeholder="Sudan" required>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <div class="form-group">
+            <label for="title">Crisis Title</label>
+            <input type="text" id="title" name="title" class="form-control" placeholder="Sudan Humanitarian Crisis" required>
+        </div>
+
+        <!-- Category & Search Query -->
+        <div class="form-row">
+            <div class="form-group">
+                <label for="category">Category</label>
+                <input type="text" id="category" name="category" class="form-control" placeholder="Conflict / Disaster / Hunger" required>
+            </div>
+            <div class="form-group">
+                <label for="search_query">Search Query (For Learn More)</label>
+                <input type="text" id="search_query" name="search_query" class="form-control" placeholder="Sudan humanitarian crisis" required>
+            </div>
+        </div>
+
+        <!-- Dynamic Donation Links Section -->
+        <div class="links-section-header">
+            <h3>Donation Links</h3>
+            <button type="button" class="add-link-btn" onclick="addLinkField()">+ Add Another Link</button>
+        </div>
+
+        <div id="links-wrapper">
+            <!-- Link Row 1 (Default) -->
+            <div class="link-entry-card">
+                <div class="form-group">
+                    <label>Link 1 Title</label>
+                    <input type="text" id="organization" name="link_titles[]" class="form-control" placeholder="e.g., UNHCR Sudan Emergency Appeal" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Link 1 URL</label>
+                    <input type="url" id="url" name="link_urls[]" class="form-control" placeholder="https://donate.unhcr.org/..." required>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit Crisis</button>
+        <input type="hidden" id="linkcount" name="linkcount" value="1">
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let linkCount = 1;
+
+    // Dynamically appends extra donation link input fields
+    function addLinkField() {
+        linkCount++;
+        document.getElementById("linkcount").value = linkCount;
+        const wrapper = document.getElementById('links-wrapper');
+        const linkCard = document.createElement('div');
+        linkCard.className = 'link-entry-card';
+        linkCard.innerHTML = `
+            <div class="form-group">
+                <label>Link ${linkCount} Title</label>
+                <input type="text" id="organization" name="link_titles[]" class="form-control" placeholder="e.g., IRC Sudan Crisis Response" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+                <label>Link ${linkCount} URL</label>
+                <input type="url" id="url" name="link_urls[]" class="form-control" placeholder="https://www.rescue.org/..." required>
+            </div>
+        `;
+        wrapper.appendChild(linkCard);
+    }
+</script>
+{% endblock %}

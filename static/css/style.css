@@ -693,3 +693,111 @@ footer button:hover {
     color: var(--white);
     border-color: var(--blue);
 }
+
+/*Admin review*/
+    .review-box {
+        background-color: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-top: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.875rem;
+        color: #334155;
+        margin-bottom: 0.4rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.65rem 0.85rem;
+        font-family: inherit;
+        font-size: 0.95rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        background-color: #ffffff;
+        outline: none;
+        transition: border-color 0.2s ease;
+    }
+
+    .form-control[readonly] {
+        background-color: #f8fafc;
+        color: #475569;
+        border-color: #e2e8f0;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .link-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Action Buttons Bar */
+    .actions-bar {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .btn-action {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-action:hover {
+        transform: translateY(-1px);
+    }
+
+    .btn-accept {
+        background-color: #16a34a;
+        color: #ffffff;
+    }
+    .btn-accept:hover {
+        background-color: #15803d;
+    }
+
+    .btn-edit {
+        background-color: #ffffff;
+        color: #ffffff;
+    }
+    .btn-edit:hover {
+        background-color: #ffffff;
+    }
+
+    .btn-save-mode {
+        background-color: #0ea5e9;
+        color: #ffffff;
+    }
+
+    .btn-reject {
+        background-color: #dc2626;
+        color: #ffffff;
+    }
+    .btn-reject:hover {
+        background-color: #b91c1c;
+    }

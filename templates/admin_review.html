@@ -1,0 +1,128 @@
+{% extends 'layout.html' %}
+
+{% block title %}Humanaid | Review Crisis{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-header">
+        <h2>Review Entry</h2>
+        <a href="{{ url_for('admin_panel') }}" class="back-btn">← Back to Dashboard</a>
+    </div>
+
+    <!-- FORM 1: Record Selector Only -->
+    <form action="{{ url_for('review_entry') }}" method="POST" style="margin-bottom: 2rem;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-group">
+            <label for="submission_id">Select Submission Record</label>
+            <div class="field-row">
+                <select name="submission_id" id="submission_id" class="form-control" required>
+                    <option value="" disabled {% if not submission %}selected{% endif %}>-- Choose a submission --</option>
+                    {% for entry in submission_entry %}
+                        <option value="{{ entry.id }}" {% if submission and submission.id == entry.id %}selected{% endif %}>
+                            {{ entry.title }} (ID: {{ entry.id }})
+                        </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn-action" style="max-width: 140px; background-color: #0f172a; color: white;">Load Record</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- FORM 2: Submission Details (Rendered strictly when submission exists) -->
+    {% if submission %}
+    <div class="review-box">
+        <form id="submissionForm"
+              action="{{ url_for('edit_submission', submission_id=submission.id) }}"
+              method="POST"
+              onkeydown="if(event.key === 'Enter'){ event.preventDefault(); }">
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="slang">Crisis ID / Slang</label>
+                    <input type="text" id="slang" name="slang" value="{{ submission.slang }}" class="form-control editable-field" readonly required>
+                </div>
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <input type="text" id="country" name="country" value="{{ submission.country }}" class="form-control editable-field" readonly required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Crisis Title</label>
+                <input type="text" id="title" name="title" value="{{ submission.title }}" class="form-control editable-field" readonly required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <input type="text" id="category" name="category" value="{{ submission.category }}" class="form-control editable-field" readonly required>
+                </div>
+                <div class="form-group">
+                    <label for="search_query">Search Query</label>
+                    <input type="text" id="search_query" name="search_query" value="{{ submission.search_query }}" class="form-control editable-field" readonly required>
+                </div>
+            </div>
+
+            <h4 style="margin: 1.5rem 0 0.75rem 0; color: #0f172a;">Donation Links</h4>
+            {% for link in submission.submission_links %}
+            <div class="link-card">
+                <div class="form-group">
+                    <label>Link {{ loop.index }} Organization</label>
+                    <input type="text" name="link_titles[]" value="{{ link.organization }}" class="form-control editable-field" readonly required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Link {{ loop.index }} URL</label>
+                    <input type="url" name="link_urls[]" value="{{ link.url }}" class="form-control editable-field" readonly required>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="actions-bar">
+                <button type="submit"
+                        formaction="{{ url_for('accept_submission', submission_id=submission.id) }}"
+                        class="btn-action btn-accept"
+                        onclick="return confirm('Accept and publish this crisis to the live database?');">
+                    ✓ Accept
+                </button>
+
+                <button type="button" id="editToggleBtn" class="btn-action btn-edit" onclick="toggleEditAll()">
+                    ✏️ Edit
+                </button>
+
+                <button type="submit"
+                        formaction="{{ url_for('reject_submission', submission_id=submission.id) }}"
+                        class="btn-action btn-reject"
+                        onclick="return confirm('Are you sure you want to reject and permanently delete this submission?');">
+                    ✕ Reject
+                </button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function toggleEditAll() {
+        const fields = document.querySelectorAll('.editable-field');
+        const btn = document.getElementById('editToggleBtn');
+        const form = document.getElementById('submissionForm');
+
+        if (!fields.length) return;
+
+        if (fields[0].hasAttribute('readonly')) {
+            fields.forEach(field => field.removeAttribute('readonly'));
+            fields[0].focus();
+
+            btn.innerText = '💾 Save Changes';
+            btn.classList.remove('btn-edit');
+            btn.classList.add('btn-save-mode');
+        } else {
+            form.submit();
+        }
+    }
+</script>
+{% endblock %}

@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import Session, selectinload
 from sqlalchemy import select
 from database import engine
-from models import Crisis, DonationLink
+from models import Crisis, DonationLink, Submission, SubmissionLink
 from flask_wtf.csrf import CSRFProtect
 import os
 from dotenv import load_dotenv
@@ -107,6 +107,44 @@ def login_admin():
             return apology("Invalid credentials.")
     return render_template("login.html")
 
+@app.route("/submit", methods=["GET","POST"])
+#Add submission to local database
+def submit_panel():
+    if request.method == 'POST':
+        slang = request.form.get("slang")
+        title = request.form.get("title")
+        country = request.form.get("country")
+        category = request.form.get("category")
+        search_query = request.form.get("search_query")
+        linkcount= request.form.get("linkcount")
+
+        if not linkcount:
+            return apology("Invalid link count")
+        try:
+            linkcount = int(linkcount)
+        except ValueError:
+            return apology("Invalid entry ID", 400)
+        link_titles = request.form.getlist("link_titles[]")
+        link_urls = request.form.getlist("link_urls[]")
+
+        if linkcount != len(link_titles) or linkcount != len(link_urls):
+            return apology("Invalid donation link data")
+
+        with Session(engine) as db_session:
+            SUBMISSION = Submission(slang=slang, title=title, country=country,category=category,search_query=search_query)
+            db_session.add(SUBMISSION)
+            db_session.flush()
+            submissions_id = SUBMISSION.id
+
+            for i in range(0,linkcount):
+                organization = link_titles[i]
+                url = link_urls[i]
+                SUBMISSIONLINK = SubmissionLink(submission_id=submissions_id, organization=organization, url=url)
+                db_session.add(SUBMISSIONLINK)
+            db_session.commit()
+        return redirect(url_for("home"))
+    return render_template("submit.html")
+
 @app.route("/admin", methods=["GET", "POST"])
 def admin_panel():
     if not session.get("is_admin"):
@@ -153,6 +191,137 @@ def add_entry():
         return redirect(url_for("admin_panel"))
     return render_template("admin_add_entry.html")
 
+# 1. Review Selector Route
+@app.route('/admin/review_submission', methods=['GET', 'POST'])
+def review_entry():
+    if not session.get('is_admin'):
+        return redirect(url_for("login_admin"))
+
+    with Session(engine) as db_session:
+        submissions_entry = db_session.query(Submission).all()
+        submission = None
+
+        submission_id = request.form.get("submission_id") or request.args.get("submission_id")
+        if submission_id:
+            try:
+                submission_id = int(submission_id)
+                submission = db_session.query(Submission).get(submission_id)
+            except ValueError:
+                return apology("Invalid entry ID", 400)
+
+        return render_template("admin_review.html", submission_entry=submissions_entry, submission=submission)
+
+
+# 1. Accept Submission (Reads the current/edited form values directly)
+@app.route('/admin/review/accept/<int:submission_id>', methods=['POST'])
+def accept_submission(submission_id):
+    if not session.get('is_admin'):
+        return redirect(url_for("login_admin"))
+
+    with Session(engine) as db_session:
+        submission = db_session.query(Submission).get(submission_id)
+        if not submission:
+            flash("Submission not found.", "error")
+            return redirect(url_for("review_entry"))
+
+        # Read the latest values submitted in the form payload
+        slang = request.form.get("slang") or submission.slang
+        title = request.form.get("title") or submission.title
+        country = request.form.get("country") or submission.country
+        category = request.form.get("category") or submission.category
+        search_query = request.form.get("search_query") or submission.search_query
+
+        # Create new Crisis record with updated data
+        crisis = Crisis(
+            slang=slang,
+            title=title,
+            country=country,
+            category=category,
+            search_query=search_query
+        )
+        db_session.add(crisis)
+        db_session.flush()
+
+        # Read the latest link inputs from the form payload
+        link_titles = request.form.getlist("link_titles[]")
+        link_urls = request.form.getlist("link_urls[]")
+
+        if link_titles and link_urls:
+            for org, url in zip(link_titles, link_urls):
+                if org.strip() and url.strip():
+                    donation_link = DonationLink(
+                        organization=org.strip(),
+                        url=url.strip(),
+                        crisis_id=crisis.id
+                    )
+                    db_session.add(donation_link)
+        else:
+            # Fallback to existing links if form didn't provide any
+            for link in submission.submission_links:
+                donation_link = DonationLink(
+                    organization=link.organization,
+                    url=link.url,
+                    crisis_id=crisis.id
+                )
+                db_session.add(donation_link)
+
+        # Remove the pending submission from the temporary table
+        db_session.delete(submission)
+        db_session.commit()
+
+        flash(f"Submission '{title}' approved and published successfully!", "success")
+        return redirect(url_for("review_entry"))
+
+
+# 2. Save Edited Submission (Updates the submission table without accepting yet)
+@app.route('/admin/review/edit/<int:submission_id>', methods=['POST'])
+def edit_submission(submission_id):
+    if not session.get('is_admin'):
+        return redirect(url_for("login_admin"))
+
+    with Session(engine) as db_session:
+        submission = db_session.query(Submission).get(submission_id)
+        if not submission:
+            flash("Submission not found.", "error")
+            return redirect(url_for("review_entry"))
+
+        # Update core fields from form
+        submission.slang = request.form.get("slang")
+        submission.title = request.form.get("title")
+        submission.country = request.form.get("country")
+        submission.category = request.form.get("category")
+        submission.search_query = request.form.get("search_query")
+
+        # Update link fields from form
+        link_titles = request.form.getlist("link_titles[]")
+        link_urls = request.form.getlist("link_urls[]")
+
+        for link_obj, org_title, org_url in zip(submission.submission_links, link_titles, link_urls):
+            link_obj.organization = org_title.strip()
+            link_obj.url = org_url.strip()
+
+        db_session.commit()
+        flash("Submission details updated successfully!", "success")
+
+        return redirect(url_for("review_entry", submission_id=submission_id))
+
+# 4. Reject Submission -> Deletes from Database
+@app.route('/admin/review/reject/<int:submission_id>', methods=['POST'])
+def reject_submission(submission_id):
+    if not session.get('is_admin'):
+        return redirect(url_for("login_admin"))
+
+    with Session(engine) as db_session:
+        submission = db_session.query(Submission).get(submission_id)
+        if submission:
+            db_session.delete(submission)
+            db_session.commit()
+            flash("Submission rejected and removed.", "success")
+        else:
+            flash("Submission not found.", "error")
+
+        return redirect(url_for("admin_panel"))
+
 # Edit Entry Route
 @app.route('/admin/edit_entry', methods=['GET', 'POST'])
 def edit_entry():
@@ -171,7 +340,6 @@ def edit_entry():
             crisis = next((e for e in entries if e.id == crisis_id), None)
             if not crisis:
                 return apology("Crisis Not Found")
-            # Pass the actual crisis object, not just the id
             return render_template("admin_edit_entry.html", Entry=entries, crisis=crisis)
 
     # GET request — no crisis selected yet, so don't pass crisis at all
