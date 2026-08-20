@@ -72,7 +72,32 @@ body {
     margin: 0;
     padding: 0;
 
-    background: var(--paper);
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(255, 190, 205, 0.45),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(218, 196, 225, 0.35),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(255, 215, 220, 0.35),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #faf7f2 0%,
+            #f8eeee 42%,
+            #f5eaf0 70%,
+            #f7f3ee 100%
+        );
+
+    background-attachment: fixed;
+
     color: var(--ink);
 
     font-family: var(--font-body);
@@ -82,7 +107,6 @@ body {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
 }
-
 img {
     max-width: 100%;
     display: block;
@@ -680,55 +704,50 @@ footer button:hover {
 /* =========================================================
    16. ADMIN ACTION GRID
    ========================================================= */
-
 .admin-actions-grid {
     display: grid;
-
-    grid-template-columns:
-        repeat(auto-fit, minmax(220px, 1fr));
-
+    grid-template-columns: repeat(4, 1fr);
     gap: 1px;
 
     background: var(--line);
-
     border: 1px solid var(--line);
 }
 
 .admin-card-btn {
     min-height: 190px;
 
-    padding: 2rem 1.5rem;
+    padding: 1.75rem;
 
     display: flex;
     flex-direction: column;
-
     align-items: flex-start;
     justify-content: flex-end;
 
-    background: var(--paper);
+    background: var(--paper) !important;
 
     border: none;
     border-radius: 0;
 
     text-decoration: none;
-
     text-align: left;
 
     cursor: pointer;
 
-    transition:
-        background-color var(--transition),
-        padding var(--transition);
+    transition: none;
 }
 
-.admin-card-btn:hover {
-    background: var(--white);
+/* Keep ALL admin cards visually identical */
+.admin-card-btn:hover,
+.admin-card-btn:focus,
+.admin-card-btn:active,
+.admin-card-btn:visited {
+    background: var(--paper) !important;
     padding-left: 1.75rem;
+    color: inherit;
 }
 
 .admin-card-btn .icon {
     margin-bottom: auto;
-
     font-size: 1.8rem;
 }
 
@@ -736,20 +755,20 @@ footer button:hover {
     margin-bottom: 0.25rem;
 
     font-family: var(--font-display);
-
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     font-weight: 400;
+
+    white-space: nowrap;
 }
 
 .admin-card-btn .description {
-    color: var(--muted);
+    margin-top: 0.3rem;
 
-    font-size: 0.78rem;
+    color: var(--muted);
+    font-size: 0.8rem;
 }
 
-
-/* Keep semantic action colors subtle */
-
+/* Semantic text colors */
 .btn-add .title {
     color: var(--green);
 }
@@ -761,43 +780,6 @@ footer button:hover {
 .btn-remove .title {
     color: var(--danger);
 }
-
-
-/* =========================================================
-   17. ADMIN LOGIN
-   ========================================================= */
-
-.admin-login-box {
-    width: min(420px, calc(100% - 48px));
-
-    margin: 6rem auto;
-
-    padding: 2.5rem;
-
-    background: var(--white);
-
-    border: 1px solid var(--line);
-
-    border-radius: var(--radius-sm);
-
-    box-shadow: 0 10px 35px rgba(32, 32, 30, 0.06);
-}
-
-.admin-login-box h2 {
-    margin-top: 0;
-    margin-bottom: 2rem;
-
-    text-align: left;
-
-    font-family: var(--font-display);
-    font-size: 2rem;
-}
-
-.admin-login-box h2::after {
-    display: none;
-}
-
-
 /* =========================================================
    18. FORMS
    ========================================================= */
