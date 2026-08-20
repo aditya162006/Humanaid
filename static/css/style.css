@@ -573,10 +573,53 @@ footer button:hover {
 
 .admin-dashboard {
     width: min(900px, calc(100% - 48px));
-
     margin: 4rem auto;
 }
 
+.admin-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+}
+
+.admin-card-btn {
+    min-height: 170px;
+    padding: 1.75rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+
+    background: var(--paper);
+    border: none;
+    border-radius: 0;
+
+    text-decoration: none;
+    text-align: left;
+
+    transition: background-color 180ms ease;
+}
+
+.admin-card-btn:hover {
+    background: var(--white);
+    padding-left: 1.75rem;
+}
+
+.admin-card-btn .title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+.admin-card-btn .description {
+    margin-top: 0.3rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+}
 .admin-header-bar {
     display: flex;
     justify-content: space-between;
