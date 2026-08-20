@@ -3,83 +3,57 @@
 {% block title %}Humanaid | Home{% endblock %}
 
 {% block content %}
-    <style>
-        body {
-            /* Path to your local image or an online image URL */
-            background-image: url('/workspaces/Humanaid/static/home.jpg');
-
-            /* Prevents the image from repeating like a tile grid */
-            background-repeat: no-repeat;
-
-            /* Scales the image to fully cover the browser window */
-            background-size: cover;
-
-            /* Centers the image on the screen */
-            background-position: center;
-
-            /* Keeps the image fixed in place while scrolling */
-            background-attachment: fixed;
-        }
-    </style>
-
-<!-- Donation Categories -->
 <section id="links">
-    <h2>Donation Categories</h2>
+    <img class="hero-img" src="{{ url_for('static', filename='image.png') }}" alt="Humanitarian Relief Banner">
+
+    <h2>DONATION CATEGORIES</h2>
     <div id="categories">
         {% for crisis in crises %}
-        <details class="accordion-item" id="{{ crisis.id }}">
-            <summary>
-                <div class="summary-content">
-                    <span class="cause-title">{{ crisis.title }}</span>
-                    <a href="https://www.google.com/search?q={{ crisis.search_query | urlencode }}"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="learn-more-btn"
-                       onclick="event.stopPropagation();">
-                        Learn More ↗
-                    </a>
-                </div>
-            </summary>
-            <div class="links-container">
-                {% for link in crisis.donation_links %}
-                <div class="donation-link-row">
-                    <span class="link-title">{{ link.organization }}</span>
-                    <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="donate-btn">
-                        Donate Now
-                    </a>
-                </div>
-                {% endfor %}
-            </div>
-        </details>
-        {% endfor %}
+  <details class="accordion-item" id="{{ crisis.id }}">
+    <summary>
+      <div class="summary-content">
+        <span class="cause-title">{{ crisis.title }}</span>
+        <a href="https://www.google.com/search?q={{ crisis.search_query | urlencode }}"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="learn-more-btn"
+           onclick="event.stopPropagation();">
+           Learn More ↗
+        </a>
+      </div>
+    </summary>
+    <div class="links-container">
+      {% for link in crisis.donation_links %}
+        <div class="donation-link-row">
+          <span class="link-title">{{ link.organization }}</span>
+          <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="donate-btn">Donate Now</a>
+        </div>
+      {% endfor %}
+    </div>
+  </details>
+{% endfor %}
+
     </div>
 </section>
 
-<!-- About -->
 <h2>About Us</h2>
 <section id="about_me">
-    <blockquote>
-        "Love and compassion are necessities, not luxuries. Without them, humanity cannot survive."
-    </blockquote>
+    <blockquote>"Love and compassion are necessities, not luxuries. Without them, humanity cannot survive."</blockquote>
 </section>
 
-<!-- Stories -->
 <h2>Stories of Impact</h2>
 <section id="stories">
-    <blockquote>
-        "Humanity is an ocean; if a few drops of the ocean are dirty, the ocean does not become dirty."
-    </blockquote>
+    <blockquote>"Humanity is an ocean; if a few drops of the ocean are dirty, the ocean does not become dirty."</blockquote>
 </section>
 
-<!-- Contact -->
 <section class="contact-section">
     <a href="mailto:adityakumarmishra162006@gmail.com?subject=Regarding%20Humanaid&body=Your%20Name%3A%20%3CINPUT%20YOUR%20NAME%20HERE%3E"
        class="contact-btn">
         ✉ Contact Us
     </a>
-    <a href="{{ url_for('submit_panel') }}" class="contact-btn">
+    <a href="{{ url_for('submit_panel') }}"
+       class="contact-btn">
         Submit A Crisis
     </a>
 </section>
-
 {% endblock %}
