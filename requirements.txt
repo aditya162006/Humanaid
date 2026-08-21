@@ -1,2 +1,12 @@
 Flask
 gunicorn
+SQLAlchemy
+Flask-SQLAlchemy
+pyturso
+python-dotenv
+Werkzeug
+Flask-WTF
+Flask-Limiter
+libsql-client==0.3.0
+turso_serverless
+libsql
